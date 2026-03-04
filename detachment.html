@@ -14,7 +14,7 @@
   --bg2:     #111111;
   --bg3:     #181818;
   --border:  #222222;
-  --border2: #2a2a2a;
+  --border2: #2e2e2e;
   --text:    #f0f0f0;
   --muted:   #666666;
   --muted2:  #333333;
@@ -22,21 +22,17 @@
 }
 
 html { scroll-behavior: smooth; }
-
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg); color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
-  overflow-x: hidden;
+  font-size: 16px; line-height: 1.7; overflow-x: hidden;
 }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
 .scroll-reveal {
   opacity: 0; transform: translateY(16px);
@@ -44,277 +40,244 @@ body {
 }
 .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* NAV */
+/* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
   padding: 22px 56px;
   background: rgba(10,10,10,0.97);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
   animation: fadeIn 0.8s ease forwards;
 }
-.nav-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px; font-weight: 700; color: var(--white);
-}
-.nav-logo em { font-style: italic; color: var(--muted); }
+.nav-logo { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--white); }
+.nav-logo em { font-style:italic; color:var(--muted); }
 .nav-btn {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--bg); background: var(--white);
-  padding: 9px 22px; text-decoration: none; transition: opacity 0.2s;
+  font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--bg); background:var(--white);
+  padding:9px 22px; text-decoration:none; transition:opacity 0.2s;
 }
-.nav-btn:hover { opacity: 0.85; }
+.nav-btn:hover { opacity:0.85; }
 
-/* HERO */
+/* ── HERO ── */
 .hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 140px 24px 80px;
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:140px 24px 80px;
 }
 .hero-eyebrow {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase;
-  margin-bottom: 24px; animation: fadeUp 0.7s ease 0.15s both;
+  font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.28em; color:var(--muted); text-transform:uppercase;
+  margin-bottom:24px; animation:fadeUp 0.7s ease 0.15s both;
 }
 .hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(56px, 10vw, 116px);
-  font-weight: 700; line-height: 0.93;
-  letter-spacing: -0.02em; margin-bottom: 28px;
-  animation: fadeUp 0.8s ease 0.3s both;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(56px,10vw,116px); font-weight:700;
+  line-height:0.93; letter-spacing:-0.02em; margin-bottom:28px;
+  animation:fadeUp 0.8s ease 0.3s both;
 }
-.hero-title em { font-style: italic; color: var(--muted); }
+.hero-title em { font-style:italic; color:var(--muted); }
 .hero-sub {
-  font-size: 17px; font-weight: 300; color: var(--muted);
-  max-width: 420px; margin: 0 auto 44px; line-height: 1.65;
-  animation: fadeUp 0.8s ease 0.45s both;
+  font-size:17px; font-weight:300; color:var(--muted);
+  max-width:440px; margin:0 auto 44px; line-height:1.65;
+  animation:fadeUp 0.8s ease 0.45s both;
 }
 .hero-actions {
-  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-  animation: fadeUp 0.8s ease 0.6s both;
+  display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+  animation:fadeUp 0.8s ease 0.6s both;
 }
 .btn-solid {
-  background: var(--white); color: var(--bg);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 13px 30px; text-decoration: none; transition: opacity 0.2s;
+  background:var(--white); color:var(--bg);
+  font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  padding:13px 30px; text-decoration:none; transition:opacity 0.2s;
 }
-.btn-solid:hover { opacity: 0.88; }
+.btn-solid:hover { opacity:0.88; }
 .btn-outline {
-  border: 1px solid var(--border2); color: var(--muted);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 13px 30px; text-decoration: none; transition: border-color 0.2s, color 0.2s;
+  border:1px solid var(--border2); color:var(--muted);
+  font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  padding:13px 30px; text-decoration:none; transition:border-color 0.2s,color 0.2s;
 }
-.btn-outline:hover { border-color: var(--muted); color: var(--text); }
+.btn-outline:hover { border-color:var(--muted); color:var(--text); }
 
-/* STAT */
 .hero-stat {
-  margin-top: 60px; animation: fadeUp 0.8s ease 0.75s both;
-  display: inline-flex; flex-direction: column; align-items: center;
-  padding: 28px 56px; background: var(--bg2); border: 1px solid var(--border);
+  margin-top:60px; animation:fadeUp 0.8s ease 0.75s both;
+  display:inline-flex; flex-direction:column; align-items:center;
+  padding:28px 56px; background:var(--bg2); border:1px solid var(--border);
 }
-.stat-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 60px; font-weight: 700; color: var(--white); line-height: 1;
-}
-.stat-label {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-top: 8px;
-}
+.stat-num { font-family:'Playfair Display',serif; font-size:60px; font-weight:700; color:var(--white); line-height:1; }
+.stat-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; margin-top:8px; }
 
-/* PRINCIPLES */
-.principles { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.principles-inner {
-  display: flex; max-width: 1140px; margin: 0 auto;
-}
+/* ── PRINCIPLES ── */
+.principles { border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.principles-inner { display:flex; max-width:1140px; margin:0 auto; }
 .prin-item {
-  flex: 1; padding: 18px 24px; border-right: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
+  flex:1; padding:18px 24px; border-right:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
 }
-.prin-item:last-child { border-right: none; }
-.prin-dash { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted2); }
-.prin-text { font-size: 12px; color: var(--muted); }
+.prin-item:last-child { border-right:none; }
+.prin-dash { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); }
+.prin-text { font-size:12px; color:var(--muted); }
 
-/* FEATURES */
-.features-wrap {
-  max-width: 1140px; margin: 0 auto; padding: 96px 56px;
-}
+/* ── SECTION LABELS ── */
 .sec-label {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px;
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:0.28em; color:var(--muted); text-transform:uppercase; margin-bottom:12px;
 }
 .sec-heading {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(32px, 4.5vw, 52px); font-weight: 700; line-height: 1.1;
-  margin-bottom: 52px; color: var(--white);
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,4.5vw,52px); font-weight:700; line-height:1.1;
+  margin-bottom:52px; color:var(--white);
 }
-.sec-heading em { font-style: italic; color: var(--muted); }
+.sec-heading em { font-style:italic; color:var(--muted); }
+
+/* ── FEATURES WRAP ── */
+.features-wrap { max-width:1140px; margin:0 auto; padding:96px 56px; }
 
 /* 3-col grid */
 .grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border: 1px solid var(--border);
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--border);
 }
 .f-card {
-  padding: 36px 30px;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  transition: background 0.3s;
-  position: relative; overflow: hidden;
+  padding:36px 30px;
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:var(--bg);
+  transition:background 0.3s;
+  position:relative; overflow:hidden;
 }
-/* remove right border on every 3rd card */
-.f-card:nth-child(3n) { border-right: none; }
-/* remove bottom border on last row (cards 4,5,6) */
+.f-card:nth-child(3n)   { border-right:none; }
 .f-card:nth-child(4),
 .f-card:nth-child(5),
-.f-card:nth-child(6) { border-bottom: none; }
-
-.f-card:hover { background: var(--bg2); }
+.f-card:nth-child(6)    { border-bottom:none; }
+.f-card:hover { background:var(--bg2); }
 .f-card::after {
-  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 2px;
-  background: var(--white); transform: scaleY(0); transform-origin: top;
-  transition: transform 0.35s ease;
+  content:''; position:absolute; top:0; left:0; bottom:0; width:2px;
+  background:var(--white); transform:scaleY(0); transform-origin:top;
+  transition:transform 0.35s ease;
 }
-.f-card:hover::after { transform: scaleY(1); }
+.f-card:hover::after { transform:scaleY(1); }
 
-.f-num {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  color: var(--muted2); letter-spacing: 0.15em; margin-bottom: 18px;
-}
-.f-icon { font-size: 20px; margin-bottom: 12px; display: block; }
-.f-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 19px; font-weight: 700; margin-bottom: 10px; color: var(--white);
-}
-.f-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+.f-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); letter-spacing:0.15em; margin-bottom:18px; }
+.f-icon { font-size:20px; margin-bottom:12px; display:block; }
+.f-name { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; margin-bottom:10px; color:var(--white); }
+.f-desc { font-size:13.5px; color:var(--muted); line-height:1.7; font-weight:300; }
 .f-tag {
-  display: inline-block; margin-top: 16px;
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); padding: 3px 10px;
-  border: 1px solid var(--border2);
+  display:inline-block; margin-top:16px;
+  font-family:'DM Mono',monospace; font-size:9px;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--muted); padding:3px 10px; border:1px solid var(--border2);
 }
 
-/* MENTOR CARD — full width below grid */
+/* ── VENT CARD — spans full width after row 2 ── */
+.vent-card {
+  border:1px solid var(--border); border-top:none;
+  display:grid; grid-template-columns:1fr 1fr;
+  background:var(--bg2);
+}
+.vent-left  { padding:44px 36px; border-right:1px solid var(--border); }
+.vent-right { padding:44px 36px; display:flex; flex-direction:column; gap:16px; justify-content:center; }
+
+.vent-mode {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:18px 20px; background:var(--bg);
+  border:1px solid var(--border); transition:border-color 0.25s;
+}
+.vent-mode:hover { border-color:var(--border2); }
+.vent-mode-icon { font-size:18px; flex-shrink:0; padding-top:3px; }
+.vent-mode-text strong { display:block; font-size:13.5px; font-weight:500; color:var(--white); margin-bottom:3px; }
+.vent-mode-text span   { font-size:12.5px; color:var(--muted); font-weight:300; line-height:1.5; display:block; }
+
+/* ── MENTOR CARD ── */
 .mentor-card {
-  border: 1px solid var(--border);
-  border-top: none;
-  display: grid; grid-template-columns: 1fr 1fr;
-  background: var(--bg2);
+  border:1px solid var(--border); border-top:none;
+  display:grid; grid-template-columns:1fr 1fr;
+  background:var(--bg2);
 }
-.mentor-left {
-  padding: 44px 36px;
-  border-right: 1px solid var(--border);
-}
-.mentor-right {
-  padding: 44px 36px;
-  display: flex; flex-direction: column; justify-content: center; gap: 12px;
-}
+.mentor-left  { padding:44px 36px; border-right:1px solid var(--border); }
+.mentor-right { padding:44px 36px; display:flex; flex-direction:column; gap:12px; justify-content:center; }
 .m-option {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 16px 18px; background: var(--bg);
-  border: 1px solid var(--border); transition: border-color 0.25s;
+  display:flex; align-items:flex-start; gap:14px;
+  padding:16px 18px; background:var(--bg);
+  border:1px solid var(--border); transition:border-color 0.25s;
 }
-.m-option:hover { border-color: var(--border2); }
-.m-icon { font-size: 16px; flex-shrink: 0; padding-top: 3px; }
-.m-text strong {
-  display: block; font-size: 13.5px; font-weight: 500;
-  color: var(--white); margin-bottom: 3px;
-}
-.m-text span { font-size: 12.5px; color: var(--muted); font-weight: 300; }
+.m-option:hover { border-color:var(--border2); }
+.m-icon { font-size:16px; flex-shrink:0; padding-top:3px; }
+.m-text strong { display:block; font-size:13.5px; font-weight:500; color:var(--white); margin-bottom:3px; }
+.m-text span   { font-size:12.5px; color:var(--muted); font-weight:300; }
 
-/* STREAK */
+/* ── STREAK ── */
 .streak-section {
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 80px 56px;
+  background:var(--bg2);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:80px 56px;
 }
-.streak-inner {
-  max-width: 1140px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
-}
-.streak-text p { font-size: 15px; color: var(--muted); font-weight: 300; margin-top: 16px; line-height: 1.7; }
+.streak-inner { max-width:1140px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+.streak-text p { font-size:15px; color:var(--muted); font-weight:300; margin-top:16px; line-height:1.7; }
 
 .s-box {
-  background: var(--bg); border: 1px solid var(--border);
-  padding: 44px; position: relative;
+  background:var(--bg); border:1px solid var(--border);
+  padding:44px; position:relative;
 }
 .s-box::before {
-  content: 'LIVE PREVIEW';
-  position: absolute; top: -1px; right: 20px;
-  background: var(--white); color: var(--bg);
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.18em; padding: 4px 12px;
+  content:'LIVE PREVIEW'; position:absolute; top:-1px; right:20px;
+  background:var(--white); color:var(--bg);
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; padding:4px 12px;
 }
-.s-day {
-  font-family: 'Playfair Display', serif;
-  font-size: 88px; font-weight: 700; color: var(--white); line-height: 1;
-}
-.s-unit {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.22em; color: var(--muted);
-  text-transform: uppercase; margin-bottom: 24px;
-}
-.s-msg {
-  font-size: 14px; color: var(--muted);
-  border-left: 2px solid var(--border2); padding-left: 14px;
-  margin-bottom: 28px; line-height: 1.6; font-weight: 300;
-  transition: opacity 0.4s;
-}
-.milestones { display: flex; gap: 8px; flex-wrap: wrap; }
-.ms {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  padding: 5px 14px; border: 1px solid var(--border2);
-  color: var(--muted2); letter-spacing: 0.08em;
-}
-.ms.hit { border-color: var(--muted); color: var(--muted); }
+.s-day { font-family:'Playfair Display',serif; font-size:88px; font-weight:700; color:var(--white); line-height:1; }
+.s-unit { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em; color:var(--muted); text-transform:uppercase; margin-bottom:24px; }
+.s-msg { font-size:14px; color:var(--muted); border-left:2px solid var(--border2); padding-left:14px; margin-bottom:28px; line-height:1.6; font-weight:300; transition:opacity 0.4s; }
+.milestones { display:flex; gap:8px; flex-wrap:wrap; }
+.ms { font-family:'DM Mono',monospace; font-size:10px; padding:5px 14px; border:1px solid var(--border2); color:var(--muted2); letter-spacing:0.08em; }
+.ms.hit { border-color:var(--muted); color:var(--muted); }
 
-/* CTA */
-.cta-section {
-  text-align: center; padding: 120px 48px;
+/* ── POST-RECOVERY ── */
+.recovery-section { max-width:1140px; margin:0 auto; padding:96px 56px 0; }
+.paths-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--border); margin-top:0;
 }
-.cta-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(44px, 8vw, 96px);
-  font-weight: 700; line-height: 0.95;
-  letter-spacing: -0.02em; margin-bottom: 20px; color: var(--white);
+.path-card {
+  padding:40px 32px; border-right:1px solid var(--border);
+  background:var(--bg); transition:background 0.3s;
 }
-.cta-title em { font-style: italic; color: var(--muted); }
-.cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 44px; font-weight: 300; }
+.path-card:last-child { border-right:none; }
+.path-card:hover { background:var(--bg2); }
+.path-icon { font-size:22px; margin-bottom:16px; display:block; }
+.path-name { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; margin-bottom:10px; color:var(--white); }
+.path-desc { font-size:13.5px; color:var(--muted); line-height:1.65; font-weight:300; }
 
-/* FOOTER */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 56px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.foot-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px; font-style: italic; color: var(--muted);
-}
-.foot-note { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted2); letter-spacing: 0.08em; }
+/* ── CTA ── */
+.cta-section { text-align:center; padding:120px 48px; }
+.cta-title { font-family:'Playfair Display',serif; font-size:clamp(44px,8vw,96px); font-weight:700; line-height:0.95; letter-spacing:-0.02em; margin-bottom:20px; color:var(--white); }
+.cta-title em { font-style:italic; color:var(--muted); }
+.cta-sub { font-size:16px; color:var(--muted); margin-bottom:44px; font-weight:300; }
 
-/* RESPONSIVE */
-@media (max-width: 800px) {
-  nav { padding: 18px 20px; }
-  .features-wrap { padding: 64px 20px; }
-  .grid-3 { grid-template-columns: 1fr; }
-  .f-card { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
-  .f-card:last-child { border-bottom: none !important; }
-  .mentor-card { grid-template-columns: 1fr; }
-  .mentor-left { border-right: none; border-bottom: 1px solid var(--border); }
-  .principles-inner { flex-wrap: wrap; }
-  .prin-item { flex: 0 0 50%; border-bottom: 1px solid var(--border); }
-  .streak-section { padding: 64px 20px; }
-  .streak-inner { grid-template-columns: 1fr; gap: 40px; }
-  .cta-section { padding: 80px 20px; }
-  footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px 20px; }
+/* ── FOOTER ── */
+footer { border-top:1px solid var(--border); padding:28px 56px; display:flex; justify-content:space-between; align-items:center; }
+.foot-logo { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:var(--muted); }
+.foot-note { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); letter-spacing:0.08em; }
+
+/* ── RESPONSIVE ── */
+@media (max-width:800px) {
+  nav { padding:18px 20px; }
+  .features-wrap, .recovery-section { padding:64px 20px; }
+  .grid-3 { grid-template-columns:1fr; }
+  .f-card { border-right:none !important; border-bottom:1px solid var(--border) !important; }
+  .f-card:last-child { border-bottom:none !important; }
+  .vent-card, .mentor-card { grid-template-columns:1fr; }
+  .vent-left, .mentor-left { border-right:none; border-bottom:1px solid var(--border); }
+  .paths-grid { grid-template-columns:1fr; }
+  .path-card { border-right:none; border-bottom:1px solid var(--border); }
+  .path-card:last-child { border-bottom:none; }
+  .principles-inner { flex-wrap:wrap; }
+  .prin-item { flex:0 0 50%; border-bottom:1px solid var(--border); }
+  .streak-section { padding:64px 20px; }
+  .streak-inner { grid-template-columns:1fr; gap:40px; }
+  .cta-section { padding:80px 20px; }
+  footer { flex-direction:column; gap:10px; text-align:center; padding:24px 20px; }
 }
 </style>
 </head>
@@ -355,90 +318,148 @@ footer {
 <!-- FEATURES -->
 <div class="features-wrap scroll-reveal" id="features">
   <div class="sec-label">Core Systems</div>
-  <div class="sec-heading">Seven tools.<br><em>One goal.</em></div>
+  <div class="sec-heading">Eight tools.<br><em>One goal.</em></div>
 
+  <!-- 6 regular cards -->
   <div class="grid-3">
     <div class="f-card">
       <div class="f-num">01</div>
       <div class="f-icon">🔥</div>
       <div class="f-name">Streak System</div>
-      <div class="f-desc">Counts every day of no contact. Milestones at 7, 14, 30, 60, and 90 days. Only breaks if you reach out first — urges don't count.</div>
+      <div class="f-desc">The behavioral core of the app. Every day without initiating contact adds to the streak — a visible number that makes relapse feel costly. Milestones at 7, 14, 30, 60, and 90 days. Urges and profile-checking don't break it. Only reaching out does. If a relapse happens, the user resets, reflects on what triggered it, and starts again. The reset is not a punishment — it's a data point.</div>
       <div class="f-tag">Core mechanic</div>
     </div>
     <div class="f-card">
       <div class="f-num">02</div>
       <div class="f-icon">🔒</div>
       <div class="f-name">Reality Vault</div>
-      <div class="f-desc">Log red flags and hard truths early on. When nostalgia rewrites history, the vault surfaces what you actually experienced.</div>
+      <div class="f-desc">After a breakup, the brain edits memory — softening the painful parts, amplifying the warmth. The Reality Vault counters this. At the start, users record red flags, incompatibilities, painful moments, and lessons while the truth is still raw. When nostalgia hits, the app surfaces these entries in the user's own words — before the brain had time to rewrite history.</div>
       <div class="f-tag">Anti-idealization</div>
     </div>
     <div class="f-card">
       <div class="f-num">03</div>
       <div class="f-icon">🛡️</div>
       <div class="f-name">Memory Shield</div>
-      <div class="f-desc">Hide photos without deleting them. A mindfulness gate — "Are you in the right state of mind?" — interrupts the impulse before you spiral.</div>
+      <div class="f-desc">Many setbacks are triggered by environment — a photo in camera roll, an old chat, a memory notification. Memory Shield moves photos to a hidden vault without deleting them. Accessing them requires passing a mindfulness gate first: "Are you in the right state of mind?" The goal is not to block, but to interrupt the impulse long enough for rational thinking to take over.</div>
       <div class="f-tag">Trigger reduction</div>
     </div>
     <div class="f-card">
       <div class="f-num">04</div>
       <div class="f-icon">📓</div>
       <div class="f-name">Journal Log</div>
-      <div class="f-desc">Short daily check-ins on how you feel. Builds self-awareness and gives the AI engine context to personalise guidance over time.</div>
+      <div class="f-desc">Recovery without reflection is just waiting. The Journal Log creates a daily habit — users record their mood, urges, triggers, and progress. Over time, patterns emerge: certain times, situations, and emotions that consistently precede urges. This data feeds the Guidance Engine. Looking back at day three and comparing it to day forty-five is one of the most powerful motivators to keep going.</div>
       <div class="f-tag">Daily reflection</div>
     </div>
     <div class="f-card">
       <div class="f-num">05</div>
       <div class="f-icon">⚡</div>
       <div class="f-name">Guidance Engine</div>
-      <div class="f-desc">AI that observes, not chats. Sends a targeted insight exactly when you're most likely to relapse — urge moments, late nights, near milestones.</div>
+      <div class="f-desc">Not a chatbot — an observer. The Guidance Engine reads streak length, journal entries, urge frequency, and time of day, then delivers one targeted message at the moment it's most needed. A reflection at day eighteen when urges peak. A reminder at 11pm when late-night impulses are highest. Short, calm, and specific. It doesn't lecture. It simply reminds you of what you already know.</div>
       <div class="f-tag">Context-aware AI</div>
     </div>
     <div class="f-card">
       <div class="f-num">06</div>
       <div class="f-icon">🤝</div>
       <div class="f-name">Community</div>
-      <div class="f-desc">Anonymous milestone posts and recovery stories. Bootstrapped from real communities so there's always something real to read from day one.</div>
+      <div class="f-desc">Isolation makes heartbreak worse. Knowing that thousands of others are going through the same process — and coming out the other side — makes it bearable. Users anonymously post milestone moments and recovery reflections. No usernames, no likes, no performance. Just real entries from real people. Bootstrapped with curated content at launch so it never feels empty from day one.</div>
       <div class="f-tag">Peer recovery</div>
     </div>
   </div>
 
-  <!-- Mentor — full width -->
+  <!-- VENT card — full width -->
+  <div class="vent-card scroll-reveal">
+    <div class="vent-left">
+      <div class="f-num">07</div>
+      <div class="f-icon">🎙️</div>
+      <div class="f-name">Vent</div>
+      <div class="f-desc" style="margin-top:6px;">Sometimes you're too overwhelmed to write. Vent lets you speak or type freely — raw, unfiltered, no structure required. Everything goes directly into your Journal Log, transcribed and timestamped. It captures the emotion in the moment before it fades or gets rationalised away. The journal doesn't need to be polished. It just needs to be honest.</div>
+      <div class="f-tag" style="margin-top:20px;">Express freely</div>
+    </div>
+    <div class="vent-right">
+      <div class="vent-mode">
+        <div class="vent-mode-icon">🎤</div>
+        <div class="vent-mode-text">
+          <strong>Voice Vent</strong>
+          <span>Hit the mic and talk. Your words are transcribed instantly and saved directly to your journal — no typing required.</span>
+        </div>
+      </div>
+      <div class="vent-mode">
+        <div class="vent-mode-icon">✏️</div>
+        <div class="vent-mode-text">
+          <strong>Text Vent</strong>
+          <span>Open a blank page and just write. Stream of consciousness, no prompts, no judgment. It lands straight in your log.</span>
+        </div>
+      </div>
+      <div class="vent-mode">
+        <div class="vent-mode-icon">🔒</div>
+        <div class="vent-mode-text">
+          <strong>Fully Private</strong>
+          <span>Vents are never shared, never analysed publicly. They exist only for you — a pressure valve with no audience.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENTOR card — full width -->
   <div class="mentor-card scroll-reveal">
     <div class="mentor-left">
-      <div class="f-num">07</div>
+      <div class="f-num">08</div>
       <div class="f-icon">🎓</div>
-      <div class="f-name">Become a Mentor</div>
-      <div class="f-desc" style="margin-top:6px;">Once you've moved on, your journey doesn't have to end. Help someone who's exactly where you once were — guide them through the process and offer the kind of support only lived experience can give.</div>
+      <div class="f-name">Friends Who Moved On</div>
+      <div class="f-desc" style="margin-top:6px;">Once you've genuinely healed, the app offers a choice. You can delete your account and close the chapter. You can archive your journey as a private record. Or you can become a Friend Who Moved On — a recovered user who reaches back for someone still in it. Not a formal mentor. Just one person who made it through, offering the kind of support only lived experience can give.</div>
       <div class="f-tag" style="margin-top:20px;">Post-recovery</div>
     </div>
     <div class="mentor-right">
       <div class="m-option">
         <div class="m-icon">🤲</div>
         <div class="m-text">
-          <strong>Mentor for Free</strong>
-          <span>Give back. Help others heal with no strings attached.</span>
+          <strong>Help for Free</strong>
+          <span>Give back with no strings attached. Peer companionship, low pressure, honest.</span>
         </div>
       </div>
       <div class="m-option">
         <div class="m-icon">💳</div>
         <div class="m-text">
           <strong>Charge for Sessions</strong>
-          <span>Set your own rate. Turn lived experience into something valuable.</span>
+          <span>Set your own rate. Lived experience has value — it's okay to be paid for it.</span>
         </div>
       </div>
       <div class="m-option">
         <div class="m-icon">🗓️</div>
         <div class="m-text">
-          <strong>Your Schedule, Your Rules</strong>
-          <span>Async messages or live sessions — mentor entirely on your terms.</span>
+          <strong>Your Terms</strong>
+          <span>Async messages or live sessions. Mentor on your own schedule, in your own way.</span>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- POST-RECOVERY PATHS -->
+<div class="recovery-section scroll-reveal">
+  <div class="sec-label">After Recovery</div>
+  <div class="sec-heading">You decide<br><em>what comes next.</em></div>
+  <div class="paths-grid">
+    <div class="path-card">
+      <div class="path-icon">◻️</div>
+      <div class="path-name">Close the Chapter</div>
+      <div class="path-desc">Delete your account entirely. No trace, no archive. A clean exit for those who want to leave it all behind and never look back.</div>
+    </div>
+    <div class="path-card">
+      <div class="path-icon">📁</div>
+      <div class="path-name">Archive Your Journey</div>
+      <div class="path-desc">Keep your streak, journal entries, and recovery timeline as a private record. Proof of what you came through — visible only to you.</div>
+    </div>
+    <div class="path-card">
+      <div class="path-icon">🔁</div>
+      <div class="path-name">Become a Friend Who Moved On</div>
+      <div class="path-desc">Stay in the ecosystem as someone who gives, not takes. Help a stranger survive what you survived. Make healing a cycle, not a dead end.</div>
+    </div>
+  </div>
+</div>
+
 <!-- STREAK DEMO -->
-<div class="streak-section scroll-reveal">
+<div class="streak-section scroll-reveal" style="margin-top:96px;">
   <div class="streak-inner">
     <div class="streak-text">
       <div class="sec-label">System 01</div>
