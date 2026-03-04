@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detachment — Recover With Discipline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0a0a0a;
+  --bg2:     #111111;
+  --bg3:     #181818;
+  --border:  #222222;
+  --border2: #2a2a2a;
+  --text:    #f0f0f0;
+  --muted:   #666666;
+  --muted2:  #333333;
+  --white:   #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.scroll-reveal {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 56px;
+  background: rgba(10,10,10,0.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.8s ease forwards;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; color: var(--white);
+}
+.nav-logo em { font-style: italic; color: var(--muted); }
+.nav-btn {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--bg); background: var(--white);
+  padding: 9px 22px; text-decoration: none; transition: opacity 0.2s;
+}
+.nav-btn:hover { opacity: 0.85; }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 140px 24px 80px;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase;
+  margin-bottom: 24px; animation: fadeUp 0.7s ease 0.15s both;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px, 10vw, 116px);
+  font-weight: 700; line-height: 0.93;
+  letter-spacing: -0.02em; margin-bottom: 28px;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+.hero-title em { font-style: italic; color: var(--muted); }
+.hero-sub {
+  font-size: 17px; font-weight: 300; color: var(--muted);
+  max-width: 420px; margin: 0 auto 44px; line-height: 1.65;
+  animation: fadeUp 0.8s ease 0.45s both;
+}
+.hero-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+.btn-solid {
+  background: var(--white); color: var(--bg);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 13px 30px; text-decoration: none; transition: opacity 0.2s;
+}
+.btn-solid:hover { opacity: 0.88; }
+.btn-outline {
+  border: 1px solid var(--border2); color: var(--muted);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 13px 30px; text-decoration: none; transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: var(--muted); color: var(--text); }
+
+/* STAT */
+.hero-stat {
+  margin-top: 60px; animation: fadeUp 0.8s ease 0.75s both;
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 28px 56px; background: var(--bg2); border: 1px solid var(--border);
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 60px; font-weight: 700; color: var(--white); line-height: 1;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-top: 8px;
+}
+
+/* PRINCIPLES */
+.principles { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.principles-inner {
+  display: flex; max-width: 1140px; margin: 0 auto;
+}
+.prin-item {
+  flex: 1; padding: 18px 24px; border-right: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.prin-item:last-child { border-right: none; }
+.prin-dash { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted2); }
+.prin-text { font-size: 12px; color: var(--muted); }
+
+/* FEATURES */
+.features-wrap {
+  max-width: 1140px; margin: 0 auto; padding: 96px 56px;
+}
+.sec-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px;
+}
+.sec-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 4.5vw, 52px); font-weight: 700; line-height: 1.1;
+  margin-bottom: 52px; color: var(--white);
+}
+.sec-heading em { font-style: italic; color: var(--muted); }
+
+/* 3-col grid */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+}
+.f-card {
+  padding: 36px 30px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  transition: background 0.3s;
+  position: relative; overflow: hidden;
+}
+/* remove right border on every 3rd card */
+.f-card:nth-child(3n) { border-right: none; }
+/* remove bottom border on last row (cards 4,5,6) */
+.f-card:nth-child(4),
+.f-card:nth-child(5),
+.f-card:nth-child(6) { border-bottom: none; }
+
+.f-card:hover { background: var(--bg2); }
+.f-card::after {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 2px;
+  background: var(--white); transform: scaleY(0); transform-origin: top;
+  transition: transform 0.35s ease;
+}
+.f-card:hover::after { transform: scaleY(1); }
+
+.f-num {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--muted2); letter-spacing: 0.15em; margin-bottom: 18px;
+}
+.f-icon { font-size: 20px; margin-bottom: 12px; display: block; }
+.f-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px; font-weight: 700; margin-bottom: 10px; color: var(--white);
+}
+.f-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+.f-tag {
+  display: inline-block; margin-top: 16px;
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); padding: 3px 10px;
+  border: 1px solid var(--border2);
+}
+
+/* MENTOR CARD — full width below grid */
+.mentor-card {
+  border: 1px solid var(--border);
+  border-top: none;
+  display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--bg2);
+}
+.mentor-left {
+  padding: 44px 36px;
+  border-right: 1px solid var(--border);
+}
+.mentor-right {
+  padding: 44px 36px;
+  display: flex; flex-direction: column; justify-content: center; gap: 12px;
+}
+.m-option {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 18px; background: var(--bg);
+  border: 1px solid var(--border); transition: border-color 0.25s;
+}
+.m-option:hover { border-color: var(--border2); }
+.m-icon { font-size: 16px; flex-shrink: 0; padding-top: 3px; }
+.m-text strong {
+  display: block; font-size: 13.5px; font-weight: 500;
+  color: var(--white); margin-bottom: 3px;
+}
+.m-text span { font-size: 12.5px; color: var(--muted); font-weight: 300; }
+
+/* STREAK */
+.streak-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 56px;
+}
+.streak-inner {
+  max-width: 1140px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+}
+.streak-text p { font-size: 15px; color: var(--muted); font-weight: 300; margin-top: 16px; line-height: 1.7; }
+
+.s-box {
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 44px; position: relative;
+}
+.s-box::before {
+  content: 'LIVE PREVIEW';
+  position: absolute; top: -1px; right: 20px;
+  background: var(--white); color: var(--bg);
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.18em; padding: 4px 12px;
+}
+.s-day {
+  font-family: 'Playfair Display', serif;
+  font-size: 88px; font-weight: 700; color: var(--white); line-height: 1;
+}
+.s-unit {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.22em; color: var(--muted);
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.s-msg {
+  font-size: 14px; color: var(--muted);
+  border-left: 2px solid var(--border2); padding-left: 14px;
+  margin-bottom: 28px; line-height: 1.6; font-weight: 300;
+  transition: opacity 0.4s;
+}
+.milestones { display: flex; gap: 8px; flex-wrap: wrap; }
+.ms {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  padding: 5px 14px; border: 1px solid var(--border2);
+  color: var(--muted2); letter-spacing: 0.08em;
+}
+.ms.hit { border-color: var(--muted); color: var(--muted); }
+
+/* CTA */
+.cta-section {
+  text-align: center; padding: 120px 48px;
+}
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 8vw, 96px);
+  font-weight: 700; line-height: 0.95;
+  letter-spacing: -0.02em; margin-bottom: 20px; color: var(--white);
+}
+.cta-title em { font-style: italic; color: var(--muted); }
+.cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 44px; font-weight: 300; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 56px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.foot-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-style: italic; color: var(--muted);
+}
+.foot-note { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted2); letter-spacing: 0.08em; }
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  nav { padding: 18px 20px; }
+  .features-wrap { padding: 64px 20px; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .f-card { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+  .f-card:last-child { border-bottom: none !important; }
+  .mentor-card { grid-template-columns: 1fr; }
+  .mentor-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .principles-inner { flex-wrap: wrap; }
+  .prin-item { flex: 0 0 50%; border-bottom: 1px solid var(--border); }
+  .streak-section { padding: 64px 20px; }
+  .streak-inner { grid-template-columns: 1fr; gap: 40px; }
+  .cta-section { padding: 80px 20px; }
+  footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Detach<em>ment</em></div>
+  <a href="#start" class="nav-btn">Start Free</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Behavioral Recovery System</div>
+  <h1 class="hero-title">Break<br>the <em>cycle.</em></h1>
+  <p class="hero-sub">Heartbreak treated like withdrawal — with structure, discipline, and tools that actually work.</p>
+  <div class="hero-actions">
+    <a href="#start" class="btn-solid">Start Your Streak</a>
+    <a href="#features" class="btn-outline">See How It Works →</a>
+  </div>
+  <div class="hero-stat">
+    <div class="stat-num">1,500+</div>
+    <div class="stat-label">People moving forward every day</div>
+  </div>
+</div>
+
+<!-- PRINCIPLES -->
+<div class="principles scroll-reveal">
+  <div class="principles-inner">
+    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Distance creates healing</div></div>
+    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Memory distorts reality</div></div>
+    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Impulse causes relapse</div></div>
+    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Triggers prolong attachment</div></div>
+    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Reflection builds growth</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features-wrap scroll-reveal" id="features">
+  <div class="sec-label">Core Systems</div>
+  <div class="sec-heading">Seven tools.<br><em>One goal.</em></div>
+
+  <div class="grid-3">
+    <div class="f-card">
+      <div class="f-num">01</div>
+      <div class="f-icon">🔥</div>
+      <div class="f-name">Streak System</div>
+      <div class="f-desc">Counts every day of no contact. Milestones at 7, 14, 30, 60, and 90 days. Only breaks if you reach out first — urges don't count.</div>
+      <div class="f-tag">Core mechanic</div>
+    </div>
+    <div class="f-card">
+      <div class="f-num">02</div>
+      <div class="f-icon">🔒</div>
+      <div class="f-name">Reality Vault</div>
+      <div class="f-desc">Log red flags and hard truths early on. When nostalgia rewrites history, the vault surfaces what you actually experienced.</div>
+      <div class="f-tag">Anti-idealization</div>
+    </div>
+    <div class="f-card">
+      <div class="f-num">03</div>
+      <div class="f-icon">🛡️</div>
+      <div class="f-name">Memory Shield</div>
+      <div class="f-desc">Hide photos without deleting them. A mindfulness gate — "Are you in the right state of mind?" — interrupts the impulse before you spiral.</div>
+      <div class="f-tag">Trigger reduction</div>
+    </div>
+    <div class="f-card">
+      <div class="f-num">04</div>
+      <div class="f-icon">📓</div>
+      <div class="f-name">Journal Log</div>
+      <div class="f-desc">Short daily check-ins on how you feel. Builds self-awareness and gives the AI engine context to personalise guidance over time.</div>
+      <div class="f-tag">Daily reflection</div>
+    </div>
+    <div class="f-card">
+      <div class="f-num">05</div>
+      <div class="f-icon">⚡</div>
+      <div class="f-name">Guidance Engine</div>
+      <div class="f-desc">AI that observes, not chats. Sends a targeted insight exactly when you're most likely to relapse — urge moments, late nights, near milestones.</div>
+      <div class="f-tag">Context-aware AI</div>
+    </div>
+    <div class="f-card">
+      <div class="f-num">06</div>
+      <div class="f-icon">🤝</div>
+      <div class="f-name">Community</div>
+      <div class="f-desc">Anonymous milestone posts and recovery stories. Bootstrapped from real communities so there's always something real to read from day one.</div>
+      <div class="f-tag">Peer recovery</div>
+    </div>
+  </div>
+
+  <!-- Mentor — full width -->
+  <div class="mentor-card scroll-reveal">
+    <div class="mentor-left">
+      <div class="f-num">07</div>
+      <div class="f-icon">🎓</div>
+      <div class="f-name">Become a Mentor</div>
+      <div class="f-desc" style="margin-top:6px;">Once you've moved on, your journey doesn't have to end. Help someone who's exactly where you once were — guide them through the process and offer the kind of support only lived experience can give.</div>
+      <div class="f-tag" style="margin-top:20px;">Post-recovery</div>
+    </div>
+    <div class="mentor-right">
+      <div class="m-option">
+        <div class="m-icon">🤲</div>
+        <div class="m-text">
+          <strong>Mentor for Free</strong>
+          <span>Give back. Help others heal with no strings attached.</span>
+        </div>
+      </div>
+      <div class="m-option">
+        <div class="m-icon">💳</div>
+        <div class="m-text">
+          <strong>Charge for Sessions</strong>
+          <span>Set your own rate. Turn lived experience into something valuable.</span>
+        </div>
+      </div>
+      <div class="m-option">
+        <div class="m-icon">🗓️</div>
+        <div class="m-text">
+          <strong>Your Schedule, Your Rules</strong>
+          <span>Async messages or live sessions — mentor entirely on your terms.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STREAK DEMO -->
+<div class="streak-section scroll-reveal">
+  <div class="streak-inner">
+    <div class="streak-text">
+      <div class="sec-label">System 01</div>
+      <div class="sec-heading">Your streak.<br><em>Your anchor.</em></div>
+      <p>Every day of distance is a data point. The streak makes your discipline visible — and makes relapse feel costly. Urges don't break it. Only action does.</p>
+    </div>
+    <div class="s-box">
+      <div class="s-day">18</div>
+      <div class="s-unit">Days No Contact</div>
+      <div class="s-msg" id="streakMsg">"Day 18 — urges peak between days 14 and 21. You're in the hardest stretch. You're still here."</div>
+      <div class="milestones">
+        <div class="ms hit">7d ✓</div>
+        <div class="ms hit">14d ✓</div>
+        <div class="ms">30d</div>
+        <div class="ms">60d</div>
+        <div class="ms">90d</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section scroll-reveal" id="start">
+  <div class="cta-title">Day <em>one</em><br>starts now.</div>
+  <p class="cta-sub">No contact. No excuses. Just distance, discipline, and time.</p>
+  <a href="#" class="btn-solid" style="font-size:12px; padding:16px 44px;">Begin Detachment</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Detachment</div>
+  <div class="foot-note">A minimal behavioral recovery system</div>
+</footer>
+
+<script>
+  const msgs = [
+    '"Day 18 — urges peak between days 14 and 21. You\'re in the hardest stretch. You\'re still here."',
+    '"Every day you don\'t text is a day you respect yourself."',
+    '"Distance is not punishment. It\'s protection."',
+    '"The urge will pass. It always does."',
+    '"You\'re not missing them. You\'re missing who you thought they were."'
+  ];
+  let mi = 0;
+  const msgEl = document.getElementById('streakMsg');
+  setInterval(() => {
+    mi = (mi + 1) % msgs.length;
+    msgEl.style.opacity = 0;
+    setTimeout(() => { msgEl.textContent = msgs[mi]; msgEl.style.opacity = 1; }, 350);
+  }, 3500);
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.scroll-reveal').forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
