@@ -3,517 +3,980 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Detachment — Recover With Discipline</title>
+<title>Detachment — Break the Loop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #050505;
+    --surface: #0c0c0c;
+    --border: #161616;
+    --border2: #1e1e1e;
+    --text: #f0ede8;
+    --muted: #3a3a3a;
+    --subtle: #888;
+    --phone: #00C9FF;
+    --breakup: #FF5C8A;
+    --liquor: #FFAA33;
+    --porn: #B388FF;
+    --white: #f0ede8;
+  }
 
-:root {
-  --bg:      #0a0a0a;
-  --bg2:     #111111;
-  --bg3:     #181818;
-  --border:  #222222;
-  --border2: #2e2e2e;
-  --text:    #f0f0f0;
-  --muted:   #666666;
-  --muted2:  #333333;
-  --white:   #ffffff;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg); color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px; line-height: 1.7; overflow-x: hidden;
-}
+  html { scroll-behavior: smooth; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-.scroll-reveal {
-  opacity: 0; transform: translateY(16px);
-  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-}
-.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--white);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(240,237,232,0.3);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), width 0.2s, height 0.2s, opacity 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  body:hover .cursor { opacity: 1; }
 
-/* ── NAV ── */
-nav {
-  position: fixed; top:0; left:0; right:0; z-index:100;
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 22px 56px;
-  background: rgba(10,10,10,0.97);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-  animation: fadeIn 0.8s ease forwards;
-}
-.nav-logo { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--white); }
-.nav-logo em { font-style:italic; color:var(--muted); }
-.nav-btn {
-  font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.12em;
-  text-transform:uppercase; color:var(--bg); background:var(--white);
-  padding:9px 22px; text-decoration:none; transition:opacity 0.2s;
-}
-.nav-btn:hover { opacity:0.85; }
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1000;
+  }
 
-/* ── HERO ── */
-.hero {
-  min-height:100vh; display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  text-align:center; padding:140px 24px 80px;
-}
-.hero-eyebrow {
-  font-family:'DM Mono',monospace; font-size:11px;
-  letter-spacing:0.28em; color:var(--muted); text-transform:uppercase;
-  margin-bottom:24px; animation:fadeUp 0.7s ease 0.15s both;
-}
-.hero-title {
-  font-family:'Playfair Display',serif;
-  font-size:clamp(56px,10vw,116px); font-weight:700;
-  line-height:0.93; letter-spacing:-0.02em; margin-bottom:28px;
-  animation:fadeUp 0.8s ease 0.3s both;
-}
-.hero-title em { font-style:italic; color:var(--muted); }
-.hero-sub {
-  font-size:17px; font-weight:300; color:var(--muted);
-  max-width:440px; margin:0 auto 44px; line-height:1.65;
-  animation:fadeUp 0.8s ease 0.45s both;
-}
-.hero-actions {
-  display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-  animation:fadeUp 0.8s ease 0.6s both;
-}
-.btn-solid {
-  background:var(--white); color:var(--bg);
-  font-family:'DM Mono',monospace; font-size:11px;
-  letter-spacing:0.12em; text-transform:uppercase;
-  padding:13px 30px; text-decoration:none; transition:opacity 0.2s;
-}
-.btn-solid:hover { opacity:0.88; }
-.btn-outline {
-  border:1px solid var(--border2); color:var(--muted);
-  font-family:'DM Mono',monospace; font-size:11px;
-  letter-spacing:0.12em; text-transform:uppercase;
-  padding:13px 30px; text-decoration:none; transition:border-color 0.2s,color 0.2s;
-}
-.btn-outline:hover { border-color:var(--muted); color:var(--text); }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.4rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(5,5,5,0.92);
+    border-bottom-color: var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    color: var(--subtle); text-decoration: none;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--white); color: #000 !important;
+    padding: 0.55rem 1.3rem; border-radius: 4px;
+    font-size: 0.7rem !important; letter-spacing: 0.15em;
+    font-weight: 500;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; color: #000 !important; }
 
-.hero-stat {
-  margin-top:60px; animation:fadeUp 0.8s ease 0.75s both;
-  display:inline-flex; flex-direction:column; align-items:center;
-  padding:28px 56px; background:var(--bg2); border:1px solid var(--border);
-}
-.stat-num { font-family:'Playfair Display',serif; font-size:60px; font-weight:700; color:var(--white); line-height:1; }
-.stat-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; margin-top:8px; }
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
 
-/* ── PRINCIPLES ── */
-.principles { border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-.principles-inner { display:flex; max-width:1140px; margin:0 auto; }
-.prin-item {
-  flex:1; padding:18px 24px; border-right:1px solid var(--border);
-  display:flex; align-items:center; gap:10px;
-}
-.prin-item:last-child { border-right:none; }
-.prin-dash { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); }
-.prin-text { font-size:12px; color:var(--muted); }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(0,201,255,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,92,138,0.04) 0%, transparent 60%);
+  }
 
-/* ── SECTION LABELS ── */
-.sec-label {
-  font-family:'DM Mono',monospace; font-size:10px;
-  letter-spacing:0.28em; color:var(--muted); text-transform:uppercase; margin-bottom:12px;
-}
-.sec-heading {
-  font-family:'Playfair Display',serif;
-  font-size:clamp(32px,4.5vw,52px); font-weight:700; line-height:1.1;
-  margin-bottom:52px; color:var(--white);
-}
-.sec-heading em { font-style:italic; color:var(--muted); }
+  .hero-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 22vw, 280px);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--border2);
+    position: absolute;
+    right: -2rem; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.02em;
+  }
 
-/* ── FEATURES WRAP ── */
-.features-wrap { max-width:1140px; margin:0 auto; padding:96px 56px; }
+  .hero-tag {
+    font-size: 0.65rem; letter-spacing: 0.4em; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards;
+  }
 
-/* 3-col grid */
-.grid-3 {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  border:1px solid var(--border);
-}
-.f-card {
-  padding:36px 30px;
-  border-right:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  background:var(--bg);
-  transition:background 0.3s;
-  position:relative; overflow:hidden;
-}
-.f-card:nth-child(3n)   { border-right:none; }
-.f-card:nth-child(4),
-.f-card:nth-child(5),
-.f-card:nth-child(6)    { border-bottom:none; }
-.f-card:hover { background:var(--bg2); }
-.f-card::after {
-  content:''; position:absolute; top:0; left:0; bottom:0; width:2px;
-  background:var(--white); transform:scaleY(0); transform-origin:top;
-  transition:transform 0.35s ease;
-}
-.f-card:hover::after { transform:scaleY(1); }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-title em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(240,237,232,0.5);
+  }
 
-.f-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); letter-spacing:0.15em; margin-bottom:18px; }
-.f-icon { font-size:20px; margin-bottom:12px; display:block; }
-.f-name { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; margin-bottom:10px; color:var(--white); }
-.f-desc { font-size:13.5px; color:var(--muted); line-height:1.7; font-weight:300; }
-.f-tag {
-  display:inline-block; margin-top:16px;
-  font-family:'DM Mono',monospace; font-size:9px;
-  letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--muted); padding:3px 10px; border:1px solid var(--border2);
-}
+  .hero-sub {
+    max-width: 520px;
+    color: var(--subtle); font-size: 0.9rem; line-height: 1.7;
+    margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards;
+  }
 
-/* ── VENT CARD — spans full width after row 2 ── */
-.vent-card {
-  border:1px solid var(--border); border-top:none;
-  display:grid; grid-template-columns:1fr 1fr;
-  background:var(--bg2);
-}
-.vent-left  { padding:44px 36px; border-right:1px solid var(--border); }
-.vent-right { padding:44px 36px; display:flex; flex-direction:column; gap:16px; justify-content:center; }
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards;
+  }
 
-.vent-mode {
-  display:flex; align-items:flex-start; gap:14px;
-  padding:18px 20px; background:var(--bg);
-  border:1px solid var(--border); transition:border-color 0.25s;
-}
-.vent-mode:hover { border-color:var(--border2); }
-.vent-mode-icon { font-size:18px; flex-shrink:0; padding-top:3px; }
-.vent-mode-text strong { display:block; font-size:13.5px; font-weight:500; color:var(--white); margin-bottom:3px; }
-.vent-mode-text span   { font-size:12.5px; color:var(--muted); font-weight:300; line-height:1.5; display:block; }
+  .btn-main {
+    background: var(--white); color: #000;
+    border: none; padding: 1rem 2.5rem; border-radius: 4px;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    letter-spacing: 0.15em; cursor: none;
+    transition: opacity 0.2s, transform 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-main:hover { opacity: 0.85; transform: translateY(-1px); }
 
-/* ── MENTOR CARD ── */
-.mentor-card {
-  border:1px solid var(--border); border-top:none;
-  display:grid; grid-template-columns:1fr 1fr;
-  background:var(--bg2);
-}
-.mentor-left  { padding:44px 36px; border-right:1px solid var(--border); }
-.mentor-right { padding:44px 36px; display:flex; flex-direction:column; gap:12px; justify-content:center; }
-.m-option {
-  display:flex; align-items:flex-start; gap:14px;
-  padding:16px 18px; background:var(--bg);
-  border:1px solid var(--border); transition:border-color 0.25s;
-}
-.m-option:hover { border-color:var(--border2); }
-.m-icon { font-size:16px; flex-shrink:0; padding-top:3px; }
-.m-text strong { display:block; font-size:13.5px; font-weight:500; color:var(--white); margin-bottom:3px; }
-.m-text span   { font-size:12.5px; color:var(--muted); font-weight:300; }
+  .btn-outline {
+    background: transparent; color: var(--subtle);
+    border: 1px solid var(--border2); padding: 1rem 2rem; border-radius: 4px;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    letter-spacing: 0.15em; cursor: none;
+    transition: all 0.2s; text-transform: uppercase;
+  }
+  .btn-outline:hover { border-color: var(--muted); color: var(--white); }
 
-/* ── STREAK ── */
-.streak-section {
-  background:var(--bg2);
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  padding:80px 56px;
-}
-.streak-inner { max-width:1140px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
-.streak-text p { font-size:15px; color:var(--muted); font-weight:300; margin-top:16px; line-height:1.7; }
+  .hero-scroll {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.6rem; letter-spacing: 0.3em;
+    animation: bob 2s ease infinite;
+  }
+  .hero-scroll-line {
+    width: 1px; height: 40px; background: linear-gradient(to bottom, var(--muted), transparent);
+  }
 
-.s-box {
-  background:var(--bg); border:1px solid var(--border);
-  padding:44px; position:relative;
-}
-.s-box::before {
-  content:'LIVE PREVIEW'; position:absolute; top:-1px; right:20px;
-  background:var(--white); color:var(--bg);
-  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; padding:4px 12px;
-}
-.s-day { font-family:'Playfair Display',serif; font-size:88px; font-weight:700; color:var(--white); line-height:1; }
-.s-unit { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em; color:var(--muted); text-transform:uppercase; margin-bottom:24px; }
-.s-msg { font-size:14px; color:var(--muted); border-left:2px solid var(--border2); padding-left:14px; margin-bottom:28px; line-height:1.6; font-weight:300; transition:opacity 0.4s; }
-.milestones { display:flex; gap:8px; flex-wrap:wrap; }
-.ms { font-family:'DM Mono',monospace; font-size:10px; padding:5px 14px; border:1px solid var(--border2); color:var(--muted2); letter-spacing:0.08em; }
-.ms.hit { border-color:var(--muted); color:var(--muted); }
+  /* LOOP SECTION */
+  .loop-section {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
 
-/* ── POST-RECOVERY ── */
-.recovery-section { max-width:1140px; margin:0 auto; padding:96px 56px 0; }
-.paths-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  border:1px solid var(--border); margin-top:0;
-}
-.path-card {
-  padding:40px 32px; border-right:1px solid var(--border);
-  background:var(--bg); transition:background 0.3s;
-}
-.path-card:last-child { border-right:none; }
-.path-card:hover { background:var(--bg2); }
-.path-icon { font-size:22px; margin-bottom:16px; display:block; }
-.path-name { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; margin-bottom:10px; color:var(--white); }
-.path-desc { font-size:13.5px; color:var(--muted); line-height:1.65; font-weight:300; }
+  .section-label {
+    font-size: 0.62rem; letter-spacing: 0.35em; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 4rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--border2);
+  }
 
-/* ── CTA ── */
-.cta-section { text-align:center; padding:120px 48px; }
-.cta-title { font-family:'Playfair Display',serif; font-size:clamp(44px,8vw,96px); font-weight:700; line-height:0.95; letter-spacing:-0.02em; margin-bottom:20px; color:var(--white); }
-.cta-title em { font-style:italic; color:var(--muted); }
-.cta-sub { font-size:16px; color:var(--muted); margin-bottom:44px; font-weight:300; }
+  .loop-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  }
 
-/* ── FOOTER ── */
-footer { border-top:1px solid var(--border); padding:28px 56px; display:flex; justify-content:space-between; align-items:center; }
-.foot-logo { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:var(--muted); }
-.foot-note { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); letter-spacing:0.08em; }
+  .loop-step {
+    padding: 3rem;
+    border: 1px solid var(--border);
+    margin: -1px 0 0 -1px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .loop-step:hover { background: var(--surface); }
 
-/* ── RESPONSIVE ── */
-@media (max-width:800px) {
-  nav { padding:18px 20px; }
-  .features-wrap, .recovery-section { padding:64px 20px; }
-  .grid-3 { grid-template-columns:1fr; }
-  .f-card { border-right:none !important; border-bottom:1px solid var(--border) !important; }
-  .f-card:last-child { border-bottom:none !important; }
-  .vent-card, .mentor-card { grid-template-columns:1fr; }
-  .vent-left, .mentor-left { border-right:none; border-bottom:1px solid var(--border); }
-  .paths-grid { grid-template-columns:1fr; }
-  .path-card { border-right:none; border-bottom:1px solid var(--border); }
-  .path-card:last-child { border-bottom:none; }
-  .principles-inner { flex-wrap:wrap; }
-  .prin-item { flex:0 0 50%; border-bottom:1px solid var(--border); }
-  .streak-section { padding:64px 20px; }
-  .streak-inner { grid-template-columns:1fr; gap:40px; }
-  .cta-section { padding:80px 20px; }
-  footer { flex-direction:column; gap:10px; text-align:center; padding:24px 20px; }
-}
+  .loop-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: var(--border2);
+    line-height: 1; margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .loop-step:hover .loop-num { color: var(--border2); }
+
+  .loop-step h3 {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-size: 1.5rem;
+    margin-bottom: 0.8rem; font-weight: 400;
+  }
+  .loop-step p { color: var(--subtle); font-size: 0.8rem; line-height: 1.7; }
+
+  .loop-arrow {
+    position: absolute; right: 2rem; bottom: 2rem;
+    font-size: 1.2rem; color: var(--muted); opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateX(-5px);
+  }
+  .loop-step:hover .loop-arrow { opacity: 1; transform: translateX(0); }
+
+  /* BATTLES */
+  .battles-section {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .battles-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: end; margin-bottom: 5rem;
+  }
+
+  .battles-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95; letter-spacing: -0.01em;
+  }
+
+  .battles-header p { color: var(--subtle); font-size: 0.85rem; line-height: 1.8; max-width: 380px; }
+
+  .battles-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .battle-card {
+    background: var(--bg);
+    padding: 3rem 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.4s;
+    cursor: none;
+  }
+  .battle-card::before {
+    content: ''; position: absolute; inset: 0;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .battle-card:hover { background: var(--surface); }
+  .battle-card:hover::before { opacity: 1; }
+
+  .battle-card[data-color="phone"]::before { background: radial-gradient(circle at 0 0, rgba(0,201,255,0.06), transparent 60%); }
+  .battle-card[data-color="breakup"]::before { background: radial-gradient(circle at 0 0, rgba(255,92,138,0.06), transparent 60%); }
+  .battle-card[data-color="liquor"]::before { background: radial-gradient(circle at 0 0, rgba(255,170,51,0.06), transparent 60%); }
+  .battle-card[data-color="porn"]::before { background: radial-gradient(circle at 0 0, rgba(179,136,255,0.06), transparent 60%); }
+
+  .battle-icon {
+    font-size: 2rem; margin-bottom: 2rem; display: block;
+    filter: grayscale(0.3);
+  }
+
+  .battle-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.3em; color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+
+  .battle-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; letter-spacing: 0.03em;
+    margin-bottom: 0.5rem; line-height: 1;
+  }
+
+  .battle-card[data-color="phone"] .battle-title { color: var(--phone); }
+  .battle-card[data-color="breakup"] .battle-title { color: var(--breakup); }
+  .battle-card[data-color="liquor"] .battle-title { color: var(--liquor); }
+  .battle-card[data-color="porn"] .battle-title { color: var(--porn); }
+
+  .battle-sub {
+    color: var(--subtle); font-size: 0.75rem; margin-bottom: 1.5rem;
+    font-style: italic; font-family: 'Instrument Serif', serif;
+  }
+
+  .battle-desc { color: var(--muted); font-size: 0.78rem; line-height: 1.7; }
+
+  .battle-tag {
+    display: inline-block; margin-top: 1.5rem;
+    padding: 0.3rem 0.8rem; border-radius: 2px;
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .battle-card[data-color="phone"] .battle-tag { background: rgba(0,201,255,0.1); color: var(--phone); }
+  .battle-card[data-color="breakup"] .battle-tag { background: rgba(255,92,138,0.1); color: var(--breakup); }
+  .battle-card[data-color="liquor"] .battle-tag { background: rgba(255,170,51,0.1); color: var(--liquor); }
+  .battle-card[data-color="porn"] .battle-tag { background: rgba(179,136,255,0.1); color: var(--porn); }
+
+  /* SYSTEMS */
+  .systems-section {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .systems-layout {
+    display: grid; grid-template-columns: 300px 1fr; gap: 6rem;
+    align-items: start;
+  }
+
+  .systems-sticky {
+    position: sticky; top: 8rem;
+  }
+
+  .systems-sticky h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem; line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+
+  .systems-sticky p { color: var(--subtle); font-size: 0.82rem; line-height: 1.7; }
+
+  .system-item {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 60px 1fr; gap: 2rem;
+    align-items: start;
+    opacity: 0.4; transition: opacity 0.3s;
+  }
+  .system-item:hover { opacity: 1; }
+  .system-item:first-child { border-top: 1px solid var(--border); }
+
+  .system-icon-wrap {
+    width: 48px; height: 48px;
+    border: 1px solid var(--border2); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .system-item:hover .system-icon-wrap { border-color: var(--muted); }
+
+  .system-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .system-desc { color: var(--subtle); font-size: 0.8rem; line-height: 1.7; }
+
+  .system-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .system-tag {
+    font-size: 0.62rem; letter-spacing: 0.15em;
+    color: var(--muted); border: 1px solid var(--border2);
+    padding: 0.2rem 0.6rem; border-radius: 2px;
+  }
+
+  /* EMOTION MODE */
+  .emotion-section {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+
+  .emotion-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,92,138,0.03), transparent 70%);
+    pointer-events: none;
+  }
+
+  .emotion-content {
+    max-width: 700px; margin: 0 auto; text-align: center;
+  }
+
+  .emotion-content h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 9vw, 110px);
+    line-height: 0.9; margin-bottom: 1.5rem;
+  }
+
+  .emotion-content h2 span {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--breakup);
+    -webkit-text-stroke: 0;
+  }
+
+  .emotion-content p {
+    color: var(--subtle); font-size: 0.88rem; line-height: 1.8;
+    margin-bottom: 3rem; max-width: 460px; margin-left: auto; margin-right: auto;
+  }
+
+  .emotion-input-demo {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 8px; padding: 1.5rem 2rem;
+    text-align: left; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .emotion-input-demo::before {
+    content: 'What do you want to feel right now?';
+    display: block;
+    font-size: 0.65rem; letter-spacing: 0.2em; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+  .emotion-typing {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-size: 1.3rem; color: var(--text);
+    border-right: 2px solid var(--breakup);
+    animation: blink 1s step-end infinite;
+    white-space: nowrap; overflow: hidden;
+  }
+
+  .emotion-chips {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    justify-content: center; margin-bottom: 3rem;
+  }
+  .emotion-chip {
+    padding: 0.5rem 1rem; border: 1px solid var(--border2);
+    border-radius: 20px; font-size: 0.72rem; color: var(--subtle);
+    transition: all 0.2s; cursor: none;
+    background: transparent;
+  }
+  .emotion-chip:hover { border-color: var(--breakup); color: var(--breakup); background: rgba(255,92,138,0.05); }
+
+  /* INTERRUPT DEMO */
+  .interrupt-section {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .interrupt-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+
+  .interrupt-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 72px); line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+
+  .interrupt-text p { color: var(--subtle); font-size: 0.85rem; line-height: 1.8; margin-bottom: 2rem; }
+
+  .interrupt-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;
+  }
+  .interrupt-stat {
+    padding: 1.2rem; border: 1px solid var(--border2); border-radius: 6px;
+  }
+  .interrupt-stat-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
+    color: var(--white); line-height: 1;
+  }
+  .interrupt-stat-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.15em; margin-top: 0.3rem; }
+
+  .interrupt-mockup {
+    background: #000;
+    border: 1px solid var(--border2); border-radius: 16px;
+    padding: 3rem 2rem; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .interrupt-mockup::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(255,92,138,0.08), transparent 60%);
+  }
+  .mockup-stop { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .mockup-label {
+    font-size: 0.6rem; letter-spacing: 0.3em; color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .mockup-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+    margin-bottom: 1.5rem; letter-spacing: 0.05em;
+  }
+  .mockup-circle {
+    width: 90px; height: 90px;
+    border-radius: 50%; border: 2px solid var(--breakup);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem;
+    color: var(--breakup);
+    box-shadow: 0 0 30px rgba(255,92,138,0.2);
+    animation: pulseGlow 2s ease infinite;
+  }
+  .mockup-vault {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 1rem; margin-bottom: 1rem;
+    font-size: 0.75rem; color: var(--subtle); font-style: italic;
+    font-family: 'Instrument Serif', serif; line-height: 1.5;
+  }
+  .mockup-meta { font-size: 0.65rem; color: var(--muted); }
+
+  /* CTA */
+  .cta-section {
+    padding: 10rem 3rem;
+    border-top: 1px solid var(--border);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(240,237,232,0.03), transparent 70%);
+  }
+  .cta-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 10vw, 130px);
+    line-height: 0.9; margin-bottom: 1.5rem; position: relative;
+  }
+  .cta-section p {
+    color: var(--subtle); font-size: 0.9rem; max-width: 400px;
+    margin: 0 auto 3rem; line-height: 1.8; position: relative;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--muted); font-size: 0.68rem; letter-spacing: 0.15em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+  @keyframes blink {
+    0%,100% { border-color: var(--breakup); }
+    50% { border-color: transparent; }
+  }
+  @keyframes pulseGlow {
+    0%,100% { box-shadow: 0 0 20px rgba(255,92,138,0.2); }
+    50% { box-shadow: 0 0 40px rgba(255,92,138,0.4); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 1.5rem 4rem; }
+    .hero-number { display: none; }
+    .loop-grid, .battles-grid, .battles-header, .interrupt-layout, .systems-layout { grid-template-columns: 1fr; }
+    .battles-section, .systems-section, .loop-section, .emotion-section, .interrupt-section, .cta-section { padding: 5rem 1.5rem; }
+    .systems-sticky { position: static; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
 </style>
 </head>
 <body>
 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
 <!-- NAV -->
-<nav>
-  <div class="nav-logo">Detach<em>ment</em></div>
-  <a href="#start" class="nav-btn">Coming Soon</a>
+<nav id="nav">
+  <div class="nav-logo">DETACHMENT</div>
+  <div class="nav-links">
+    <a href="#battles">Battles</a>
+    <a href="#systems">Systems</a>
+    <a href="#emotion">Emotion Mode</a>
+    <a href="#interrupt">Shield</a>
+    <a href="#cta" class="nav-cta">Get Early Access</a>
+  </div>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-eyebrow">Behavioral Recovery System</div>
-  <h1 class="hero-title">Break<br>the <em>cycle.</em></h1>
-  <p class="hero-sub">Heartbreak treated like withdrawal — with structure, discipline, and tools that actually work.</p>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-number">4</div>
+  <div class="hero-tag">A behavioral intervention system</div>
+  <h1 class="hero-title">
+    Break<br><em>the Loop.</em><br>Reclaim<br>Control.
+  </h1>
+  <p class="hero-sub">
+    Most habit apps ask you to be disciplined. Detachment assumes you won't be — and builds systems that intervene before discipline is even required.
+  </p>
   <div class="hero-actions">
-    <a href="#start" class="btn-solid">Start Your Streak</a>
-    <a href="#features" class="btn-outline">See How It Works →</a>
+    <button class="btn-main">Start Detaching</button>
+    <button class="btn-outline">See How It Works</button>
   </div>
-  <div class="hero-stat">
-    <div class="stat-num">1,500+</div>
-    <div class="stat-label">People moving forward every day</div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    SCROLL
   </div>
-</div>
+</section>
 
-<!-- PRINCIPLES -->
-<div class="principles scroll-reveal">
-  <div class="principles-inner">
-    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Distance creates healing</div></div>
-    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Memory distorts reality</div></div>
-    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Impulse causes relapse</div></div>
-    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Triggers prolong attachment</div></div>
-    <div class="prin-item"><div class="prin-dash">—</div><div class="prin-text">Reflection builds growth</div></div>
-  </div>
-</div>
-
-<!-- FEATURES -->
-<div class="features-wrap scroll-reveal" id="features">
-  <div class="sec-label">Core Systems</div>
-  <div class="sec-heading">Eight tools.<br><em>One goal.</em></div>
-
-  <!-- 6 regular cards -->
-  <div class="grid-3">
-    <div class="f-card">
-      <div class="f-num">01</div>
-      <div class="f-icon">🔥</div>
-      <div class="f-name">Streak System</div>
-      <div class="f-desc">The behavioral core of the app. Every day without initiating contact adds to the streak — a visible number that makes relapse feel costly. Milestones at 7, 14, 30, 60, and 90 days. Urges and profile-checking don't break it. Only reaching out does. If a relapse happens, the user resets, reflects on what triggered it, and starts again. The reset is not a punishment — it's a data point.</div>
-      <div class="f-tag">Core mechanic</div>
+<!-- THE LOOP -->
+<section class="loop-section" id="loop">
+  <div class="section-label">The Problem</div>
+  <div class="loop-grid reveal">
+    <div class="loop-step">
+      <div class="loop-num">01</div>
+      <h3>Trigger</h3>
+      <p>A cue appears. Boredom. Loneliness. Stress. A notification. Your brain registers discomfort and begins searching for relief.</p>
+      <span class="loop-arrow">→</span>
     </div>
-    <div class="f-card">
-      <div class="f-num">02</div>
-      <div class="f-icon">🔒</div>
-      <div class="f-name">Reality Vault</div>
-      <div class="f-desc">After a breakup, the brain edits memory — softening the painful parts, amplifying the warmth. The Reality Vault counters this. At the start, users record red flags, incompatibilities, painful moments, and lessons while the truth is still raw. When nostalgia hits, the app surfaces these entries in the user's own words — before the brain had time to rewrite history.</div>
-      <div class="f-tag">Anti-idealization</div>
+    <div class="loop-step">
+      <div class="loop-num">02</div>
+      <h3>Urge</h3>
+      <p>The brain demands dopamine. Open Instagram. Smoke a cigarette. Check their profile. Text the person you shouldn't.</p>
+      <span class="loop-arrow">→</span>
     </div>
-    <div class="f-card">
-      <div class="f-num">03</div>
-      <div class="f-icon">🛡️</div>
-      <div class="f-name">Memory Shield</div>
-      <div class="f-desc">Many setbacks are triggered by environment — a photo in camera roll, an old chat, a memory notification. Memory Shield moves photos to a hidden vault without deleting them. Accessing them requires passing a mindfulness gate first: "Are you in the right state of mind?" The goal is not to block, but to interrupt the impulse long enough for rational thinking to take over.</div>
-      <div class="f-tag">Trigger reduction</div>
+    <div class="loop-step">
+      <div class="loop-num">03</div>
+      <h3>Action</h3>
+      <p>The behavior happens. You didn't decide to do it. You were already doing it before you realized what was happening.</p>
+      <span class="loop-arrow">→</span>
     </div>
-    <div class="f-card">
-      <div class="f-num">04</div>
-      <div class="f-icon">📓</div>
-      <div class="f-name">Journal Log</div>
-      <div class="f-desc">Recovery without reflection is just waiting. The Journal Log creates a daily habit — users record their mood, urges, triggers, and progress. Over time, patterns emerge: certain times, situations, and emotions that consistently precede urges. This data feeds the Guidance Engine. Looking back at day three and comparing it to day forty-five is one of the most powerful motivators to keep going.</div>
-      <div class="f-tag">Daily reflection</div>
-    </div>
-    <div class="f-card">
-      <div class="f-num">05</div>
-      <div class="f-icon">⚡</div>
-      <div class="f-name">Guidance Engine</div>
-      <div class="f-desc">Not a chatbot — an observer. The Guidance Engine reads streak length, journal entries, urge frequency, and time of day, then delivers one targeted message at the moment it's most needed. A reflection at day eighteen when urges peak. A reminder at 11pm when late-night impulses are highest. Short, calm, and specific. It doesn't lecture. It simply reminds you of what you already know.</div>
-      <div class="f-tag">Context-aware AI</div>
-    </div>
-    <div class="f-card">
-      <div class="f-num">06</div>
-      <div class="f-icon">🤝</div>
-      <div class="f-name">Community</div>
-      <div class="f-desc">Isolation makes heartbreak worse. Knowing that thousands of others are going through the same process — and coming out the other side — makes it bearable. Users anonymously post milestone moments and recovery reflections. No usernames, no likes, no performance. Just real entries from real people. Bootstrapped with curated content at launch so it never feels empty from day one.</div>
-      <div class="f-tag">Peer recovery</div>
+    <div class="loop-step">
+      <div class="loop-num">04</div>
+      <h3>Reinforcement</h3>
+      <p>Temporary relief. Then shame. Then the loop is stronger than it was before. The brain has learned the action works.</p>
+      <span class="loop-arrow">↺</span>
     </div>
   </div>
+  <div style="margin-top: 4rem; padding: 3rem; border: 1px solid var(--border2); border-radius: 4px; max-width: 600px; reveal" class="reveal">
+    <div style="font-size: 0.65rem; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 1rem;">THE SOLUTION</div>
+    <p style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.3rem; line-height: 1.5; color: var(--text);">
+      "Detachment doesn't ask you to be strong in the moment of weakness. It removes the moment entirely."
+    </p>
+  </div>
+</section>
 
-  <!-- VENT card — full width -->
-  <div class="vent-card scroll-reveal">
-    <div class="vent-left">
-      <div class="f-num">07</div>
-      <div class="f-icon">🎙️</div>
-      <div class="f-name">Vent</div>
-      <div class="f-desc" style="margin-top:6px;">Sometimes you're too overwhelmed to write. Vent lets you speak or type freely — raw, unfiltered, no structure required. Everything goes directly into your Journal Log, transcribed and timestamped. It captures the emotion in the moment before it fades or gets rationalised away. The journal doesn't need to be polished. It just needs to be honest.</div>
-      <div class="f-tag" style="margin-top:20px;">Express freely</div>
+<!-- FOUR BATTLES -->
+<section class="battles-section" id="battles">
+  <div class="battles-header reveal">
+    <h2>Four<br>Battles.<br>One<br>System.</h2>
+    <p>Every addiction runs on the same neurological loop. Detachment interrupts all four with the same three-layer system — detect, intercept, replace — adapted to each specific pattern.</p>
+  </div>
+  <div class="battles-grid reveal">
+    <div class="battle-card" data-color="phone">
+      <span class="battle-icon">📱</span>
+      <div class="battle-num">01 / 04</div>
+      <div class="battle-title">Phone Addiction</div>
+      <div class="battle-sub">Stop the unconscious scroll</div>
+      <p class="battle-desc">Screen time monitoring detects when you open flagged apps. A hard interrupt fires before you lose hours. Targets the unconscious opens — the ones you don't even remember doing.</p>
+      <span class="battle-tag">Screen Time API</span>
     </div>
-    <div class="vent-right">
-      <div class="vent-mode">
-        <div class="vent-mode-icon">🎤</div>
-        <div class="vent-mode-text">
-          <strong>Voice Vent</strong>
-          <span>Hit the mic and talk. Your words are transcribed instantly and saved directly to your journal — no typing required.</span>
+    <div class="battle-card" data-color="breakup">
+      <span class="battle-icon">💔</span>
+      <div class="battle-num">02 / 04</div>
+      <div class="battle-title">Breakup</div>
+      <div class="battle-sub">Break the obsession loop</div>
+      <p class="battle-desc">The brain has built a genuine dopamine dependency on someone no longer available. Detects profile checks, message attempts. Surfaces the one question that matters: what are you hoping to find?</p>
+      <span class="battle-tag">Profile Detection</span>
+    </div>
+    <div class="battle-card" data-color="liquor">
+      <span class="battle-icon">🍺</span>
+      <div class="battle-num">03 / 04</div>
+      <div class="battle-title">Liquor & Smoking</div>
+      <div class="battle-sub">Block the craving path</div>
+      <p class="battle-desc">Geofencing fires when you're within range of flagged locations — liquor stores, bars, specific corners. Intervenes before you walk through the door. The only app that acts at the physical moment of vulnerability.</p>
+      <span class="battle-tag">Geofencing</span>
+    </div>
+    <div class="battle-card" data-color="porn">
+      <span class="battle-icon">🔒</span>
+      <div class="battle-num">04 / 04</div>
+      <div class="battle-title">Porn</div>
+      <div class="battle-sub">No shame. Just patterns.</div>
+      <p class="battle-desc">The hardest interrupt. The shortest window between urge and action. Zero judgment language anywhere in the interface. Treats compulsive behavior as a pattern, not a moral failure. Because that's what it is.</p>
+      <span class="battle-tag">Site Detection</span>
+    </div>
+  </div>
+</section>
+
+<!-- SIX SYSTEMS -->
+<section class="systems-section" id="systems">
+  <div class="section-label">The Architecture</div>
+  <div class="systems-layout">
+    <div class="systems-sticky reveal">
+      <h2>Six Systems.<br>One Goal.</h2>
+      <p style="margin-top: 1.2rem;">Every system exists to do one thing: create enough distance between the urge and the action that the urge collapses on its own.</p>
+    </div>
+    <div class="reveal">
+      <div class="system-item">
+        <div class="system-icon-wrap">🔥</div>
+        <div>
+          <div class="system-name">Streak System</div>
+          <p class="system-desc">Tracks clean days per battle. Four separate streaks running simultaneously. The streak isn't about pride — it's evidence that the interception is working. Every milestone is proof.</p>
+          <div class="system-tags">
+            <span class="system-tag">3d</span>
+            <span class="system-tag">7d</span>
+            <span class="system-tag">14d</span>
+            <span class="system-tag">30d</span>
+            <span class="system-tag">60d</span>
+            <span class="system-tag">90d</span>
+          </div>
         </div>
       </div>
-      <div class="vent-mode">
-        <div class="vent-mode-icon">✏️</div>
-        <div class="vent-mode-text">
-          <strong>Text Vent</strong>
-          <span>Open a blank page and just write. Stream of consciousness, no prompts, no judgment. It lands straight in your log.</span>
+      <div class="system-item">
+        <div class="system-icon-wrap">⚠️</div>
+        <div>
+          <div class="system-name">Reality Vault</div>
+          <p class="system-desc">Users log their reason for quitting in their own words. When the hard interrupt fires, the first thing they see is their own sentence from day one. Not a generic message. Their message.</p>
+          <div class="system-tags">
+            <span class="system-tag">Personal</span>
+            <span class="system-tag">Day-One Words</span>
+          </div>
         </div>
       </div>
-      <div class="vent-mode">
-        <div class="vent-mode-icon">🔒</div>
-        <div class="vent-mode-text">
-          <strong>Fully Private</strong>
-          <span>Vents are never shared, never analysed publicly. They exist only for you — a pressure valve with no audience.</span>
+      <div class="system-item">
+        <div class="system-icon-wrap">🛡️</div>
+        <div>
+          <div class="system-name">Trigger Shield</div>
+          <p class="system-desc">Active geofencing and screen time detection. Fires without the user having to remember to use it. A hard interrupt — not a notification — that takes over the screen for 60 seconds minimum.</p>
+          <div class="system-tags">
+            <span class="system-tag">Geofencing</span>
+            <span class="system-tag">Screen Time</span>
+            <span class="system-tag">60s Block</span>
+          </div>
+        </div>
+      </div>
+      <div class="system-item">
+        <div class="system-icon-wrap">📓</div>
+        <div>
+          <div class="system-name">Journal Log</div>
+          <p class="system-desc">Entries don't just create self-awareness — they train the system. The more a user logs, the smarter the detection becomes. Journaling has a functional payoff, not just a reflective one.</p>
+          <div class="system-tags">
+            <span class="system-tag">Pattern Intel</span>
+            <span class="system-tag">Trigger Map</span>
+          </div>
+        </div>
+      </div>
+      <div class="system-item">
+        <div class="system-icon-wrap">⚡</div>
+        <div>
+          <div class="system-name">Guidance Engine</div>
+          <p class="system-desc">Context-aware nudges timed to real behavioral data. Knows when a geofence just fired, when a streak milestone is approaching, when the user has had three close calls in a week.</p>
+          <div class="system-tags">
+            <span class="system-tag">Behavioral Data</span>
+            <span class="system-tag">AI-Timed</span>
+          </div>
+        </div>
+      </div>
+      <div class="system-item">
+        <div class="system-icon-wrap">🎭</div>
+        <div>
+          <div class="system-name">Emotion Mode</div>
+          <p class="system-desc">The replacement layer. Powered by YouTube IFrame API. Type what you want to feel — AI reads your emotional intent and surfaces a curated playlist that matches that exact state.</p>
+          <div class="system-tags">
+            <span class="system-tag">AI-Powered</span>
+            <span class="system-tag">YouTube API</span>
+            <span class="system-tag">Free</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- MENTOR card — full width -->
-  <div class="mentor-card scroll-reveal">
-    <div class="mentor-left">
-      <div class="f-num">08</div>
-      <div class="f-icon">🎓</div>
-      <div class="f-name">Friends Who Moved On</div>
-      <div class="f-desc" style="margin-top:6px;">Once you've genuinely healed, the app offers a choice. You can delete your account and close the chapter. You can archive your journey as a private record. Or you can become a Friend Who Moved On — a recovered user who reaches back for someone still in it. Not a formal mentor. Just one person who made it through, offering the kind of support only lived experience can give.</div>
-      <div class="f-tag" style="margin-top:20px;">Post-recovery</div>
-    </div>
-    <div class="mentor-right">
-      <div class="m-option">
-        <div class="m-icon">🤲</div>
-        <div class="m-text">
-          <strong>Help for Free</strong>
-          <span>Give back with no strings attached. Peer companionship, low pressure, honest.</span>
-        </div>
-      </div>
-      <div class="m-option">
-        <div class="m-icon">💳</div>
-        <div class="m-text">
-          <strong>Charge for Sessions</strong>
-          <span>Set your own rate. Lived experience has value — it's okay to be paid for it.</span>
-        </div>
-      </div>
-      <div class="m-option">
-        <div class="m-icon">🗓️</div>
-        <div class="m-text">
-          <strong>Your Terms</strong>
-          <span>Async messages or live sessions. Mentor on your own schedule, in your own way.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- EMOTION MODE -->
+<section class="emotion-section" id="emotion">
+  <div class="emotion-bg"></div>
+  <div class="emotion-content reveal">
+    <div class="section-label" style="justify-content: center;">Emotion Mode</div>
+    <h2>Feel What<br>You <span>Need.</span></h2>
+    <p>No mood wheels. No emoji selectors. No pre-defined categories. Just your words — and content that meets you exactly where you are.</p>
 
-<!-- POST-RECOVERY PATHS -->
-<div class="recovery-section scroll-reveal">
-  <div class="sec-label">After Recovery</div>
-  <div class="sec-heading">You decide<br><em>what comes next.</em></div>
-  <div class="paths-grid">
-    <div class="path-card">
-      <div class="path-icon">◻️</div>
-      <div class="path-name">Close the Chapter</div>
-      <div class="path-desc">Delete your account entirely. No trace, no archive. A clean exit for those who want to leave it all behind and never look back.</div>
+    <div class="emotion-input-demo">
+      <div class="emotion-typing" id="typingText">I want to cry</div>
     </div>
-    <div class="path-card">
-      <div class="path-icon">📁</div>
-      <div class="path-name">Archive Your Journey</div>
-      <div class="path-desc">Keep your streak, journal entries, and recovery timeline as a private record. Proof of what you came through — visible only to you.</div>
-    </div>
-    <div class="path-card">
-      <div class="path-icon">🔁</div>
-      <div class="path-name">Become a Friend Who Moved On</div>
-      <div class="path-desc">Stay in the ecosystem as someone who gives, not takes. Help a stranger survive what you survived. Make healing a cycle, not a dead end.</div>
-    </div>
-  </div>
-</div>
 
-<!-- STREAK DEMO -->
-<div class="streak-section scroll-reveal" style="margin-top:96px;">
-  <div class="streak-inner">
-    <div class="streak-text">
-      <div class="sec-label">System 01</div>
-      <div class="sec-heading">Your streak.<br><em>Your anchor.</em></div>
-      <p>Every day of distance is a data point. The streak makes your discipline visible — and makes relapse feel costly. Urges don't break it. Only action does.</p>
+    <div class="emotion-chips">
+      <button class="emotion-chip">I want to cry</button>
+      <button class="emotion-chip">I miss her so much</button>
+      <button class="emotion-chip">I need to feel powerful</button>
+      <button class="emotion-chip">I feel completely empty</button>
+      <button class="emotion-chip">I just want to laugh</button>
+      <button class="emotion-chip">I need hope right now</button>
+      <button class="emotion-chip">I'm so angry</button>
+      <button class="emotion-chip">I want to feel nothing</button>
+      <button class="emotion-chip">I feel disgusting</button>
+      <button class="emotion-chip">I need to believe it's okay</button>
     </div>
-    <div class="s-box">
-      <div class="s-day">18</div>
-      <div class="s-unit">Days No Contact</div>
-      <div class="s-msg" id="streakMsg">"Day 18 — urges peak between days 14 and 21. You're in the hardest stretch. You're still here."</div>
-      <div class="milestones">
-        <div class="ms hit">7d ✓</div>
-        <div class="ms hit">14d ✓</div>
-        <div class="ms">30d</div>
-        <div class="ms">60d</div>
-        <div class="ms">90d</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 3rem;">
+      <div style="background: var(--surface); padding: 1.5rem; text-align: center;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">😢</div>
+        <div style="font-size: 0.7rem; color: var(--breakup);">Release Mode</div>
+        <div style="font-size: 0.65rem; color: var(--muted); margin-top: 0.3rem;">Go deeper. Process.</div>
+      </div>
+      <div style="background: var(--surface); padding: 1.5rem; text-align: center; border-left: 1px solid var(--border); border-right: 1px solid var(--border);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡</div>
+        <div style="font-size: 0.7rem; color: var(--phone);">Power Mode</div>
+        <div style="font-size: 0.65rem; color: var(--muted); margin-top: 0.3rem;">Climb out. Rebuild.</div>
+      </div>
+      <div style="background: var(--surface); padding: 1.5rem; text-align: center;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌊</div>
+        <div style="font-size: 0.7rem; color: var(--liquor);">Calm Mode</div>
+        <div style="font-size: 0.65rem; color: var(--muted); margin-top: 0.3rem;">Quiet the noise.</div>
       </div>
     </div>
+
+    <p style="font-size: 0.75rem; color: var(--muted); margin-bottom: 2rem;">
+      Powered by Claude AI + YouTube IFrame API. Free. Legal. Always current.
+    </p>
   </div>
-</div>
+</section>
+
+<!-- INTERRUPT DEMO -->
+<section class="interrupt-section" id="interrupt">
+  <div class="interrupt-layout reveal">
+    <div class="interrupt-text">
+      <div class="section-label">Trigger Shield</div>
+      <h2>60 Seconds<br>Between You<br>and Relapse.</h2>
+      <p>
+        Urges peak at 3 minutes and collapse. The shield doesn't need to defeat your addiction — it just needs to outlast the spike. A 60-second hard interrupt creates the gap your willpower can't.
+      </p>
+      <p style="color: var(--muted); font-size: 0.78rem; line-height: 1.8;">
+        Not a notification. Not a banner. A full screen takeover that cannot be dismissed until the countdown ends. Your vault message. Your streak. Your words from day one.
+      </p>
+      <div class="interrupt-stats">
+        <div class="interrupt-stat">
+          <div class="interrupt-stat-num">60s</div>
+          <div class="interrupt-stat-label">Minimum block</div>
+        </div>
+        <div class="interrupt-stat">
+          <div class="interrupt-stat-num">3min</div>
+          <div class="interrupt-stat-label">Urge peak window</div>
+        </div>
+        <div class="interrupt-stat">
+          <div class="interrupt-stat-num">4</div>
+          <div class="interrupt-stat-label">Battles covered</div>
+        </div>
+        <div class="interrupt-stat">
+          <div class="interrupt-stat-num">0</div>
+          <div class="interrupt-stat-label">Generic messages</div>
+        </div>
+      </div>
+    </div>
+    <div class="interrupt-mockup">
+      <div class="mockup-stop">🛑</div>
+      <div class="mockup-label">Trigger Shield Activated</div>
+      <div class="mockup-title">WAIT.</div>
+      <div class="mockup-circle" id="mockupCountdown">60</div>
+      <div class="mockup-vault">
+        "She hurt me. Checking her profile only hurts me more."
+      </div>
+      <div class="mockup-meta">14 day streak on the line</div>
+    </div>
+  </div>
+</section>
 
 <!-- CTA -->
-<div class="cta-section scroll-reveal" id="start">
-  <div class="cta-title">Day <em>one</em><br>starts now.</div>
-  <p class="cta-sub">No contact. No excuses. Just distance, discipline, and time.</p>
-  <a href="#" class="btn-solid" style="font-size:12px; padding:16px 44px;">Begin Detachment</a>
-</div>
+<section class="cta-section" id="cta">
+  <div class="cta-bg"></div>
+  <div class="section-label" style="justify-content: center;">Ready?</div>
+  <h2>Start<br>Detaching.</h2>
+  <p>The loop has been running long enough. It's time to interrupt it.</p>
+  <div style="display: flex; gap: 1rem; justify-content: center; position: relative;">
+    <button class="btn-main">Get Early Access</button>
+    <button class="btn-outline">Learn More</button>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="foot-logo">Detachment</div>
-  <div class="foot-note">A minimal behavioral recovery system</div>
+  <div style="font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.1em;">DETACHMENT</div>
+  <div>Interrupt the impulse. Create distance. Rebuild control.</div>
+  <div>© 2026</div>
 </footer>
 
 <script>
-  const msgs = [
-    '"Day 18 — urges peak between days 14 and 21. You\'re in the hardest stretch. You\'re still here."',
-    '"Every day you don\'t text is a day you respect yourself."',
-    '"Distance is not punishment. It\'s protection."',
-    '"The urge will pass. It always does."',
-    '"You\'re not missing them. You\'re missing who you thought they were."'
-  ];
-  let mi = 0;
-  const msgEl = document.getElementById('streakMsg');
-  setInterval(() => {
-    mi = (mi + 1) % msgs.length;
-    msgEl.style.opacity = 0;
-    setTimeout(() => { msgEl.textContent = msgs[mi]; msgEl.style.opacity = 1; }, 350);
-  }, 3500);
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('button, a, .battle-card, .loop-step').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.6'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '1'; });
+  });
 
-  const obs = new IntersectionObserver(entries => {
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.scroll-reveal').forEach(r => obs.observe(r));
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Typing animation
+  const phrases = [
+    "I want to cry",
+    "I miss her so much it hurts",
+    "I need to feel powerful",
+    "I feel completely empty",
+    "I just want to laugh",
+    "I need hope right now",
+    "I'm so angry",
+    "I want to feel nothing"
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const typingEl = document.getElementById('typingText');
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      typingEl.textContent = phrase.slice(0, ci + 1);
+      ci++;
+      if (ci === phrase.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      typingEl.textContent = phrase.slice(0, ci - 1);
+      ci--;
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(type, 300); return; }
+    }
+    setTimeout(type, deleting ? 40 : 70);
+  }
+  type();
+
+  // Countdown mockup
+  let count = 60;
+  setInterval(() => {
+    count = count > 0 ? count - 1 : 60;
+    document.getElementById('mockupCountdown').textContent = count;
+  }, 1000);
 </script>
 </body>
 </html>
