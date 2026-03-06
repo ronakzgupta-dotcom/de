@@ -3,525 +3,819 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Time Wallet — Coming Soon</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>Time Wallet — Your Time Has a Price</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 
-  :root {
-    --bg: #080808;
-    --surface: #111;
-    --border: #1e1e1e;
-    --gold: #c9a84c;
-    --gold-dim: #7a6030;
-    --white: #f0ece4;
-    --muted: #555;
-    --green: #2ecc71;
-  }
+:root {
+  --bg: #060608;
+  --surface: #0d0d10;
+  --card-bg: #111115;
+  --border: rgba(255,255,255,0.06);
+  --green: #00e87a;
+  --text: #f5f5f7;
+  --muted: #666;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-  }
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:20px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(6,6,8,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:18px; }
+.nav-logo span { color:var(--green); }
+.nav-pill {
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);
+  border:1px solid var(--border); padding:6px 14px; border-radius:100px;
+}
 
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 48px;
-    border-bottom: 1px solid var(--border);
-    animation: fadeDown 0.7s ease both;
-  }
+/* HERO */
+.hero {
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  text-align:center; padding:140px 24px 80px;
+  position:relative;
+}
+.hero-bg {
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,232,122,0.05) 0%, transparent 70%);
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--green);
+  background:rgba(0,232,122,0.08); border:1px solid rgba(0,232,122,0.2);
+  padding:6px 16px; border-radius:100px; margin-bottom:32px;
+  opacity:0; animation:up 0.7s 0.1s forwards;
+}
+.live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+.hero-h1 {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:clamp(52px,9vw,120px); line-height:0.95;
+  letter-spacing:-0.03em; margin-bottom:24px;
+  opacity:0; animation:up 0.7s 0.25s forwards;
+}
+.hero-h1 .g { color:var(--green); }
+.hero-h1 .d { color:#222; }
+.hero-p {
+  font-size:18px; font-weight:300; color:#777;
+  max-width:460px; line-height:1.7; margin-bottom:48px;
+  opacity:0; animation:up 0.7s 0.4s forwards;
+}
+.hero-btns {
+  display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+  opacity:0; animation:up 0.7s 0.55s forwards;
+}
+.btn-g {
+  font-family:'Syne',sans-serif; font-weight:700; font-size:14px;
+  padding:14px 32px; background:var(--green); color:#000;
+  border:none; border-radius:8px; cursor:pointer;
+  transition:all 0.2s; text-decoration:none;
+}
+.btn-g:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(0,232,122,0.3); }
+.btn-o {
+  font-family:'Syne',sans-serif; font-weight:600; font-size:14px;
+  padding:14px 32px; background:transparent; color:var(--muted);
+  border:1px solid var(--border); border-radius:8px; cursor:pointer;
+  transition:all 0.2s; text-decoration:none;
+}
+.btn-o:hover { border-color:var(--green); color:var(--green); }
+.scroll-hint {
+  position:absolute; bottom:40px;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:#333;
+  opacity:0; animation:up 0.7s 1s forwards;
+}
+.scroll-line { width:1px; height:40px; background:linear-gradient(to bottom, var(--green), transparent); }
 
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.12em;
-    color: var(--gold);
-  }
+/* HOW IT WORKS */
+.how-section {
+  padding:120px 48px;
+  position:relative;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.how-inner { max-width:1200px; margin:0 auto; }
+.how-header { text-align:center; margin-bottom:72px; }
+.section-tag {
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--green);
+  letter-spacing:0.15em; text-transform:uppercase; margin-bottom:12px;
+}
+.section-h2 {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:clamp(36px,5vw,60px); letter-spacing:-0.03em; line-height:1.05;
+  margin-bottom:16px;
+}
+.section-p { font-size:16px; color:#555; line-height:1.8; font-weight:300; max-width:500px; }
 
-  .badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 5px 12px;
-    border-radius: 20px;
-    text-transform: uppercase;
-  }
+.steps { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--border); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.step { background:var(--surface); padding:48px 36px; display:flex; flex-direction:column; gap:20px; transition:background 0.3s; }
+.step:hover { background:#111115; }
+.step-num {
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--green);
+  background:rgba(0,232,122,0.08); border:1px solid rgba(0,232,122,0.15);
+  width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px;
+}
+.step-emoji { font-size:32px; }
+.step-title { font-family:'Syne',sans-serif; font-weight:700; font-size:22px; letter-spacing:-0.02em; }
+.step-desc { font-size:14px; color:#555; line-height:1.7; font-weight:300; }
+.step-pill {
+  display:inline-block; margin-top:auto;
+  font-family:'JetBrains Mono',monospace; font-size:10px;
+  padding:4px 12px; border-radius:100px;
+  border:1px solid var(--border); color:var(--muted);
+}
+.step-pill.bad { border-color:rgba(255,60,60,0.2); color:#ff4444; background:rgba(255,60,60,0.05); }
+.step-pill.good { border-color:rgba(0,232,122,0.2); color:var(--green); background:rgba(0,232,122,0.05); }
 
-  .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 90px 24px 60px;
-  }
+/* ATM SECTION */
+.atm-section {
+  padding:120px 48px;
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:80px; align-items:center;
+}
+.atm-machine { display:flex; flex-direction:column; align-items:center; }
+.atm-body {
+  width:100%; max-width:340px;
+  background:linear-gradient(160deg, #1a1a1f 0%, #141418 50%, #111115 100%);
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.06);
+  overflow:hidden; padding-bottom:32px;
+}
+.atm-top-bar {
+  background:linear-gradient(90deg,#0a0a0c,#141418);
+  padding:16px 24px; display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.atm-brand { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--green); letter-spacing:0.2em; }
+.atm-status { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:9px; color:#444; }
+.atm-dot { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse 2s infinite; }
 
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-    animation: fadeUp 0.7s 0.2s ease both;
-  }
+.atm-screen {
+  margin:20px 20px 16px;
+  background:#080910;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.06);
+  overflow:hidden;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.5);
+}
+.atm-screen-header {
+  background:linear-gradient(135deg,#0f1520,#0a0f18);
+  padding:20px 20px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.atm-screen-warning {
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:#ff6b35;
+  margin-bottom:6px; display:flex; align-items:center; gap:6px;
+}
+.atm-screen-time {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:40px; color:#ff4444; letter-spacing:-0.02em; line-height:1;
+}
+.atm-screen-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:#333; margin-top:4px; }
+.atm-screen-body { padding:16px 20px 20px; }
+.atm-screen-q { font-size:12px; color:#666; margin-bottom:14px; font-weight:300; }
 
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(5rem, 16vw, 10.5rem);
-    line-height: 0.88;
-    letter-spacing: 0.04em;
-    animation: fadeUp 0.7s 0.35s ease both;
-  }
+.atm-options-grid { display:flex; flex-direction:column; gap:8px; }
+.atm-opt-btn {
+  background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px; padding:14px 16px;
+  display:flex; align-items:center; gap:12px;
+  cursor:pointer; transition:all 0.2s; text-align:left;
+}
+.atm-opt-btn:hover { background:rgba(255,255,255,0.06); }
+.atm-opt-btn.selected { background:rgba(0,232,122,0.08); border-color:rgba(0,232,122,0.3); }
+.atm-opt-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.icon-borrow { background:rgba(255,60,60,0.1); }
+.icon-save { background:rgba(0,232,122,0.1); }
+.icon-exit { background:rgba(255,255,255,0.05); }
+.atm-opt-title { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; color:var(--text); margin-bottom:2px; }
+.atm-opt-sub { font-size:11px; color:#444; }
+.atm-opt-arrow { font-size:14px; color:#333; margin-left:auto; }
+.atm-opt-btn.selected .atm-opt-arrow { color:var(--green); }
 
-  .hero-title .gold { color: var(--gold); }
+.atm-controls { display:flex; justify-content:space-between; padding:0 24px; margin-top:8px; }
+.atm-ctrl-label { display:flex; flex-direction:column; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:8px; color:#333; letter-spacing:0.1em; }
+.atm-ctrl-btn {
+  width:48px; height:48px;
+  background:linear-gradient(145deg,#1e1e24,#15151a);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:16px; transition:all 0.15s;
+  box-shadow:0 4px 8px rgba(0,0,0,0.3);
+}
+.atm-ctrl-btn:hover { transform:translateY(-1px); }
+.atm-ctrl-btn:active { transform:translateY(1px); }
+.atm-ctrl-btn.confirm { background:linear-gradient(145deg,rgba(0,232,122,0.2),rgba(0,232,122,0.1)); border-color:rgba(0,232,122,0.3); }
+.atm-ctrl-btn.cancel { background:linear-gradient(145deg,rgba(255,60,60,0.15),rgba(255,60,60,0.08)); border-color:rgba(255,60,60,0.2); }
 
-  .hero-sub {
-    font-size: clamp(0.9rem, 2vw, 1.05rem);
-    color: #666;
-    max-width: 400px;
-    line-height: 1.75;
-    margin-top: 24px;
-    font-weight: 400;
-    animation: fadeUp 0.7s 0.5s ease both;
-  }
+.atm-slot {
+  margin:20px 24px 0; height:6px;
+  background:linear-gradient(90deg,#0a0a0c,#111115,#0a0a0c);
+  border-radius:100px; border:1px solid rgba(255,255,255,0.05);
+  position:relative; overflow:hidden;
+}
+.atm-slot::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(0,232,122,0.3),transparent);
+  animation:slotScan 3s ease-in-out infinite;
+}
 
-  /* TICKER */
-  .ticker-wrap {
-    margin-top: 56px;
-    animation: fadeUp 0.7s 0.65s ease both;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
+.atm-info { display:flex; flex-direction:column; gap:28px; }
+.atm-info-h2 { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(36px,4vw,56px); letter-spacing:-0.03em; line-height:1.05; }
+.atm-info-h2 .g { color:var(--green); }
+.atm-info-p { font-size:15px; color:#555; line-height:1.8; font-weight:300; }
+.atm-facts { display:flex; flex-direction:column; gap:12px; }
+.atm-fact {
+  display:flex; gap:16px; align-items:flex-start;
+  padding:16px 20px; background:var(--surface);
+  border:1px solid var(--border); border-radius:12px;
+}
+.atm-fact-icon { font-size:20px; flex-shrink:0; margin-top:2px; }
+.atm-fact-title { font-family:'Syne',sans-serif; font-weight:700; font-size:14px; margin-bottom:4px; }
+.atm-fact-desc { font-size:13px; color:#555; line-height:1.6; }
 
-  .ticker-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+/* CARDS */
+.cards-section {
+  padding:120px 48px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.cards-inner { max-width:1200px; margin:0 auto; }
+.cards-header { text-align:center; margin-bottom:72px; }
+.cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
 
-  .ticker-box {
-    border: 1px solid var(--border);
-    background: var(--surface);
-    border-radius: 6px;
-    padding: 22px 32px;
-    width: 360px;
-    max-width: 90vw;
-    position: relative;
-    overflow: hidden;
-  }
+.tw-card {
+  aspect-ratio:1.586; border-radius:20px; padding:28px;
+  position:relative; overflow:hidden; cursor:pointer;
+  transition:transform 0.4s ease, box-shadow 0.4s ease;
+  display:flex; flex-direction:column;
+}
+.tw-card:hover { transform:translateY(-10px); }
 
-  .ticker-box::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--gold);
-    border-radius: 3px 0 0 3px;
-  }
+.card-black {
+  background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 40%,#0d0d0d 100%);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.03);
+}
+.card-black:hover { box-shadow:0 40px 80px rgba(0,0,0,0.8), 0 0 60px rgba(0,232,122,0.08); }
 
-  .ticker-icon {
-    font-size: 1.5rem;
-    display: block;
-    margin-bottom: 10px;
-    transition: opacity 0.3s;
-  }
+.card-silver {
+  background:linear-gradient(135deg,#c8c8c8 0%,#f0f0f0 30%,#b0b0b0 60%,#e8e8e8 100%);
+  border:1px solid rgba(255,255,255,0.5);
+  box-shadow:0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.card-silver:hover { box-shadow:0 40px 80px rgba(0,0,0,0.5); }
 
-  .ticker-text {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.35;
-    min-height: 2.7em;
-  }
+.card-gold {
+  background:linear-gradient(135deg,#b8860b 0%,#ffd700 25%,#daa520 50%,#ffc107 75%,#b8860b 100%);
+  border:1px solid rgba(255,215,0,0.4);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255,193,7,0.1), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.card-gold:hover { box-shadow:0 40px 80px rgba(0,0,0,0.6), 0 0 80px rgba(255,193,7,0.2); }
 
-  .ticker-sub {
-    font-size: 0.8rem;
-    color: #555;
-    margin-top: 7px;
-    font-weight: 400;
-    line-height: 1.55;
-    min-height: 2.4em;
-  }
+.card-shine {
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.06) 50%,transparent 70%);
+}
+.card-silver .card-shine { background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,0.45) 50%,transparent 80%); }
+.card-gold .card-shine { background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,0.3) 50%,transparent 80%); }
 
-  .ticker-dots {
-    display: flex;
-    gap: 6px;
-    margin-top: 18px;
-    justify-content: center;
-  }
+.card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:auto; }
+.card-chip { width:32px; height:24px; border-radius:4px; background:linear-gradient(135deg,rgba(255,210,100,0.3),rgba(255,210,100,0.15)); border:1px solid rgba(255,210,100,0.2); }
+.card-silver .card-chip { background:linear-gradient(135deg,rgba(0,0,0,0.15),rgba(0,0,0,0.08)); border-color:rgba(0,0,0,0.1); }
+.card-gold .card-chip { background:linear-gradient(135deg,rgba(0,0,0,0.2),rgba(0,0,0,0.1)); border-color:rgba(0,0,0,0.15); }
 
-  .dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--border);
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-  }
+.card-circles { display:flex; }
+.cc1 { width:22px; height:22px; border-radius:50%; background:#eb001b; opacity:0.7; margin-right:-8px; }
+.cc2 { width:22px; height:22px; border-radius:50%; background:#f79e1b; opacity:0.7; }
 
-  .dot.active { background: var(--gold); transform: scale(1.4); }
+.card-mid { flex:1; display:flex; flex-direction:column; justify-content:flex-end; padding-top:16px; }
+.card-bal-lbl { font-family:'JetBrains Mono',monospace; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:0.2em; margin-bottom:4px; }
+.card-bal-val { font-family:'Syne',sans-serif; font-weight:800; font-size:28px; color:rgba(255,255,255,0.9); letter-spacing:-0.02em; line-height:1; }
 
-  /* CARD */
-  .card-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 70px 24px 60px;
-  }
+.card-silver .card-bal-lbl { color:rgba(0,0,0,0.35); }
+.card-silver .card-bal-val { color:#111; }
+.card-gold .card-bal-lbl { color:rgba(0,0,0,0.4); }
+.card-gold .card-bal-val { color:#1a0a00; }
 
-  .section-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 36px;
-  }
+.card-bottom { display:flex; justify-content:space-between; align-items:flex-end; margin-top:14px; }
+.card-name { font-family:'JetBrains Mono',monospace; font-size:9px; color:rgba(255,255,255,0.2); letter-spacing:0.15em; }
+.card-num { font-family:'JetBrains Mono',monospace; font-size:9px; color:rgba(255,255,255,0.08); margin-top:3px; }
+.card-silver .card-name, .card-silver .card-num { color:rgba(0,0,0,0.3); }
+.card-gold .card-name, .card-gold .card-num { color:rgba(0,0,0,0.35); }
 
-  .cc {
-    width: 320px;
-    height: 195px;
-    background: linear-gradient(135deg, #161206, #231a0a, #161206);
-    border: 1px solid var(--gold-dim);
-    border-radius: 14px;
-    padding: 26px 28px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 80px rgba(201,168,76,0.07), 0 24px 60px rgba(0,0,0,0.7);
-    animation: fadeUp 0.8s 0.3s ease both, cardGlow 4s 1.5s ease-in-out infinite;
-  }
+.card-streak { text-align:right; }
+.card-str-n { font-family:'Syne',sans-serif; font-weight:800; font-size:22px; color:var(--green); line-height:1; }
+.card-str-l { font-family:'JetBrains Mono',monospace; font-size:8px; color:rgba(255,255,255,0.2); margin-top:2px; letter-spacing:0.1em; }
+.card-silver .card-str-n { color:#1a6b3a; }
+.card-silver .card-str-l { color:rgba(0,0,0,0.3); }
+.card-gold .card-str-n { color:#5a2d00; }
+.card-gold .card-str-l { color:rgba(0,0,0,0.35); }
 
-  .cc::before {
-    content: '';
-    position: absolute;
-    top: -50px; right: -50px;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
-  }
+.card-label { text-align:center; margin-top:16px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.05em; }
+.card-label strong { color:var(--text); }
 
-  .cc-chip {
-    width: 32px; height: 24px;
-    background: linear-gradient(135deg, #c9a84c, #7a6030);
-    border-radius: 4px;
-    margin-bottom: 22px;
-  }
+/* FEATURES */
+.features-section { padding:120px 48px; max-width:1200px; margin:0 auto; }
+.features-header { text-align:center; margin-bottom:64px; }
+.features-list { display:flex; flex-direction:column; gap:2px; }
+.feature-row {
+  display:grid; grid-template-columns:72px 1fr auto;
+  gap:24px; align-items:center;
+  padding:24px 32px; background:var(--surface);
+  border:1px solid var(--border); border-radius:12px;
+  transition:all 0.2s; margin-bottom:2px;
+}
+.feature-row:hover { background:var(--card-bg); border-color:rgba(255,255,255,0.1); }
+.feature-emoji { font-size:28px; text-align:center; }
+.feature-title { font-family:'Syne',sans-serif; font-weight:700; font-size:17px; margin-bottom:4px; }
+.feature-desc { font-size:13px; color:#555; line-height:1.6; font-weight:300; }
+.feature-badge {
+  font-family:'JetBrains Mono',monospace; font-size:10px;
+  padding:5px 14px; border-radius:100px; white-space:nowrap;
+  border:1px solid var(--border); color:var(--muted);
+}
+.feature-badge.premium { border-color:rgba(255,193,7,0.3); color:#ffc107; background:rgba(255,193,7,0.05); }
 
-  .cc-number {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
+/* PRICING */
+.pricing-section {
+  padding:120px 48px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+}
+.pricing-inner { max-width:800px; margin:0 auto; }
+.pricing-header { text-align:center; margin-bottom:64px; }
+.pricing-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.pricing-card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:20px; padding:40px 36px; transition:border-color 0.2s;
+}
+.pricing-card:hover { border-color:rgba(255,255,255,0.12); }
+.pricing-card.featured { border-color:rgba(0,232,122,0.2); background:linear-gradient(135deg,rgba(0,232,122,0.04) 0%,var(--card-bg) 100%); }
+.pricing-tier { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:var(--muted); margin-bottom:20px; }
+.pricing-tier.p { color:var(--green); }
+.pricing-amount { font-family:'Syne',sans-serif; font-weight:800; font-size:56px; letter-spacing:-0.03em; line-height:1; margin-bottom:4px; }
+.pricing-period { font-size:13px; color:#444; margin-bottom:32px; font-weight:300; }
+.pricing-items { display:flex; flex-direction:column; gap:10px; }
+.pricing-item { display:flex; gap:10px; font-size:14px; color:#555; line-height:1.5; align-items:flex-start; }
+.pricing-item.on { color:var(--text); }
+.pricing-item::before { content:'—'; color:var(--green); flex-shrink:0; font-family:'JetBrains Mono',monospace; }
+.pricing-item.off::before { color:#222; }
 
-  .cc-footer { display: flex; justify-content: space-between; align-items: flex-end; }
-  .cc-meta { display: flex; flex-direction: column; gap: 2px; }
+footer {
+  padding:48px; display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--border); max-width:1200px; margin:0 auto;
+}
+.footer-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:16px; }
+.footer-logo span { color:var(--green); }
+.footer-note { font-family:'JetBrains Mono',monospace; font-size:11px; color:#222; }
 
-  .cc-lbl {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.45rem;
-    letter-spacing: 0.18em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-  }
+/* ANIMATIONS */
+@keyframes up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+@keyframes slotScan { 0%,100% { transform:translateX(-100%); } 50% { transform:translateX(100%); } }
 
-  .cc-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.1em;
-    color: var(--gold);
-  }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
 
-  .cc-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    color: var(--gold);
-    opacity: 0.5;
-  }
-
-  .cc-caption {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.57rem;
-    letter-spacing: 0.18em;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 18px;
-    text-transform: uppercase;
-  }
-
-  /* NOTIFY */
-  .notify {
-    padding: 60px 24px 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-top: 1px solid var(--border);
-  }
-
-  .notify-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
-
-  .notify-row { display: flex; width: 100%; max-width: 400px; }
-
-  .notify-input {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-right: none;
-    color: var(--white);
-    font-family: 'Syne', sans-serif;
-    font-size: 0.88rem;
-    padding: 13px 18px;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .notify-input::placeholder { color: var(--muted); }
-  .notify-input:focus { border-color: var(--gold-dim); }
-
-  .notify-btn {
-    background: var(--gold);
-    color: #080808;
-    border: none;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.12em;
-    padding: 13px 24px;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-
-  .notify-btn:hover { background: #dbbe60; }
-  .notify-btn:active { transform: scale(0.97); }
-
-  .success-msg {
-    display: none;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--green);
-    letter-spacing: 0.15em;
-    margin-top: 14px;
-  }
-
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.1em;
-    color: var(--gold);
-    opacity: 0.5;
-  }
-
-  .footer-copy {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(22px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-14px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes cardGlow {
-    0%, 100% { box-shadow: 0 0 80px rgba(201,168,76,0.07), 0 24px 60px rgba(0,0,0,0.7); }
-    50% { box-shadow: 0 0 120px rgba(201,168,76,0.14), 0 24px 60px rgba(0,0,0,0.7); }
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes slideOut {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-10px); }
-  }
-
-  .anim-in { animation: slideIn 0.4s cubic-bezier(0.2,0,0,1) both; }
-  .anim-out { animation: slideOut 0.3s cubic-bezier(0.4,0,1,1) both; }
-
-  @media (max-width: 600px) {
-    nav { padding: 18px 20px; }
-    footer { padding: 20px; flex-direction: column; text-align: center; }
-    .notify-row { flex-direction: column; }
-    .notify-input { border-right: 1px solid var(--border); border-bottom: none; border-radius: 4px 4px 0 0; }
-    .notify-btn { border-radius: 0 0 4px 4px; }
-  }
+@media(max-width:900px) {
+  .steps, .cards-grid, .pricing-grid { grid-template-columns:1fr; }
+  .atm-section { grid-template-columns:1fr; }
+  nav { padding:16px 20px; }
+  .how-section, .atm-section, .cards-section, .features-section, .pricing-section { padding:80px 20px; }
+  .feature-row { grid-template-columns:48px 1fr; }
+  .feature-badge { display:none; }
+  footer { flex-direction:column; gap:16px; text-align:center; padding:40px 20px; }
+}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">Time Wallet</div>
-  <div class="badge">Coming Soon</div>
+  <div class="nav-logo">Time<span>Wallet</span></div>
+  <div class="nav-pill">ANDROID · COMING SOON</div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="eyebrow">Your time. Your currency.</div>
-  <h1 class="hero-title">SPEND<br><span class="gold">WISELY.</span></h1>
-  <p class="hero-sub">You get 1,440 minutes every day. Stop wasting them on autopilot.</p>
+  <div class="hero-bg"></div>
+  <div class="hero-tag"><div class="live-dot"></div> The Screen Time App That Thinks Like a Bank</div>
+  <h1 class="hero-h1">Your time<br>is <span class="g">currency.</span><br><span class="d">Spend wisely.</span></h1>
+  <p class="hero-p">Set daily limits for every app. Borrow time when you need it — but pay it back with interest. Save unused time and watch it grow.</p>
+  <div class="hero-btns">
+    <a href="#how" class="btn-g">See How It Works</a>
+    <a href="#cards" class="btn-o">View Card Designs</a>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>scroll</div>
+</section>
 
-  <div class="ticker-wrap">
-    <div class="ticker-label">What it does</div>
-    <div class="ticker-box">
-      <span class="ticker-icon" id="tickerIcon">💳</span>
-      <div class="ticker-text" id="tickerText">Set a daily limit for each app</div>
-      <div class="ticker-sub" id="tickerSub">Like a credit limit — Instagram gets 30 mins, YouTube gets 45. You decide.</div>
-      <div class="ticker-dots" id="tickerDots"></div>
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-h2">Simple as your bank app.<br>Smarter than any timer.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-emoji">⏱️</div>
+        <div class="step-title">Set your daily budget</div>
+        <p class="step-desc">Give each app a time limit for the day. Instagram gets 30 mins. YouTube gets 45. Resets every midnight — like getting a fresh salary every day.</p>
+        <span class="step-pill good">You're in control</span>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-emoji">🏧</div>
+        <div class="step-title">Time runs out — ATM appears</div>
+        <p class="step-desc">No boring notification. A big ATM screen pops up with exactly 3 choices. You decide what happens next. No sneaky "ignore limit" button.</p>
+        <span class="step-pill">Your call</span>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-emoji">💸</div>
+        <div class="step-title">Borrow today, pay tomorrow</div>
+        <p class="step-desc">Take 10 extra minutes now — but tomorrow's budget shrinks by 12. That 20% interest makes every borrow feel real. Real consequences. Real change.</p>
+        <span class="step-pill bad">+20% interest</span>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="card-section">
-  <div class="section-eyebrow">Your Time Card</div>
-  <div class="cc">
-    <div class="cc-chip"></div>
-    <div class="cc-number">1440 · 0000 · 0000 · 2025</div>
-    <div class="cc-footer">
-      <div class="cc-meta">
-        <span class="cc-lbl">Card Holder</span>
-        <span class="cc-val">YOUR NAME</span>
+<!-- ATM SECTION -->
+<div class="atm-section reveal">
+  <div class="atm-machine">
+    <div class="atm-body">
+      <div class="atm-top-bar">
+        <span class="atm-brand">TIME WALLET</span>
+        <div class="atm-status"><div class="atm-dot"></div> ACTIVE</div>
       </div>
-      <div class="cc-meta">
-        <span class="cc-lbl">Daily Balance</span>
-        <span class="cc-val">1440 MIN</span>
+
+      <div class="atm-screen">
+        <div class="atm-screen-header">
+          <div class="atm-screen-warning">⚠ Instagram time is up</div>
+          <div class="atm-screen-time">00:00</div>
+          <div class="atm-screen-label">DAILY BALANCE DEPLETED</div>
+        </div>
+        <div class="atm-screen-body">
+          <div class="atm-screen-q">What do you want to do?</div>
+          <div class="atm-options-grid">
+            <div class="atm-opt-btn selected" id="opt1" onclick="selectOpt(0)">
+              <div class="atm-opt-icon icon-borrow">💳</div>
+              <div style="flex:1">
+                <div class="atm-opt-title">Borrow Time</div>
+                <div class="atm-opt-sub">+20% interest deducted tomorrow</div>
+              </div>
+              <div class="atm-opt-arrow">›</div>
+            </div>
+            <div class="atm-opt-btn" id="opt2" onclick="selectOpt(1)">
+              <div class="atm-opt-icon icon-save">🏦</div>
+              <div style="flex:1">
+                <div class="atm-opt-title">Use Savings</div>
+                <div class="atm-opt-sub">Withdraw from your saved time</div>
+              </div>
+              <div class="atm-opt-arrow">›</div>
+            </div>
+            <div class="atm-opt-btn" id="opt3" onclick="selectOpt(2)">
+              <div class="atm-opt-icon icon-exit">🚪</div>
+              <div style="flex:1">
+                <div class="atm-opt-title">Close App</div>
+                <div class="atm-opt-sub">Stay disciplined. Streak safe.</div>
+              </div>
+              <div class="atm-opt-arrow">›</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cc-brand">TW</div>
+
+      <div class="atm-controls">
+        <div class="atm-ctrl-label"><div class="atm-ctrl-btn cancel">✕</div>CANCEL</div>
+        <div class="atm-ctrl-label"><div class="atm-ctrl-btn">▲</div>UP</div>
+        <div class="atm-ctrl-label"><div class="atm-ctrl-btn">▼</div>DOWN</div>
+        <div class="atm-ctrl-label"><div class="atm-ctrl-btn confirm" id="confirmBtn">✓</div>SELECT</div>
+      </div>
+      <div class="atm-slot"></div>
     </div>
   </div>
-  <p class="cc-caption">Enter your CVV every time you open a distracting app</p>
+
+  <div class="atm-info">
+    <div>
+      <div class="section-tag">The ATM Moment</div>
+      <h2 class="atm-info-h2">Not a popup.<br>A <span class="g">decision.</span></h2>
+    </div>
+    <p class="atm-info-p">Every other app shows a notification you dismiss in half a second. Time Wallet puts you in front of a real choice — with real consequences attached to each one. You feel it.</p>
+    <div class="atm-facts">
+      <div class="atm-fact">
+        <div class="atm-fact-icon">💳</div>
+        <div>
+          <div class="atm-fact-title">Borrow Time</div>
+          <div class="atm-fact-desc">Get more time now. Pay 20% extra off tomorrow's budget automatically.</div>
+        </div>
+      </div>
+      <div class="atm-fact">
+        <div class="atm-fact-icon">🏦</div>
+        <div>
+          <div class="atm-fact-title">Use Savings</div>
+          <div class="atm-fact-desc">Used less time yesterday? Pull from your savings — up to your own daily limit.</div>
+        </div>
+      </div>
+      <div class="atm-fact">
+        <div class="atm-fact-icon">✌️</div>
+        <div>
+          <div class="atm-fact-title">Close the App</div>
+          <div class="atm-fact-desc">Walk away. Streak intact. Savings growing. Tomorrow you start stronger.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CARDS -->
+<section class="cards-section reveal" id="cards">
+  <div class="cards-inner">
+    <div class="cards-header">
+      <div class="section-tag">Your Time Card</div>
+      <h2 class="section-h2">Three tiers.<br>One identity.</h2>
+      <p style="font-size:16px;color:#555;margin-top:16px;font-weight:300;max-width:460px;margin-left:auto;margin-right:auto">Your balance lives on a card. On your homescreen. In your face every time you unlock. Pick your style.</p>
+    </div>
+    <div class="cards-grid">
+
+      <!-- BLACK -->
+      <div>
+        <div class="tw-card card-black">
+          <div class="card-shine"></div>
+          <div class="card-top">
+            <div class="card-chip"></div>
+            <div class="card-circles"><div class="cc1"></div><div class="cc2"></div></div>
+          </div>
+          <div class="card-mid">
+            <div class="card-bal-lbl">TODAY'S BALANCE</div>
+            <div class="card-bal-val" id="b1">47:23</div>
+          </div>
+          <div class="card-bottom">
+            <div>
+              <div class="card-name">TIME WALLET</div>
+              <div class="card-num">**** **** **** 0001</div>
+            </div>
+            <div class="card-streak">
+              <div class="card-str-n">14</div>
+              <div class="card-str-l">DAY STREAK</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-label">⬛ <strong>Onyx Black</strong> · Free</div>
+      </div>
+
+      <!-- SILVER -->
+      <div>
+        <div class="tw-card card-silver">
+          <div class="card-shine"></div>
+          <div class="card-top">
+            <div class="card-chip"></div>
+            <div class="card-circles"><div class="cc1"></div><div class="cc2"></div></div>
+          </div>
+          <div class="card-mid">
+            <div class="card-bal-lbl">TODAY'S BALANCE</div>
+            <div class="card-bal-val" id="b2">47:23</div>
+          </div>
+          <div class="card-bottom">
+            <div>
+              <div class="card-name">TIME WALLET</div>
+              <div class="card-num">**** **** **** 0002</div>
+            </div>
+            <div class="card-streak">
+              <div class="card-str-n">14</div>
+              <div class="card-str-l">DAY STREAK</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-label">🪙 <strong>Silver</strong> · Premium</div>
+      </div>
+
+      <!-- GOLD -->
+      <div>
+        <div class="tw-card card-gold">
+          <div class="card-shine"></div>
+          <div class="card-top">
+            <div class="card-chip"></div>
+            <div class="card-circles"><div class="cc1"></div><div class="cc2"></div></div>
+          </div>
+          <div class="card-mid">
+            <div class="card-bal-lbl">TODAY'S BALANCE</div>
+            <div class="card-bal-val" id="b3">47:23</div>
+          </div>
+          <div class="card-bottom">
+            <div>
+              <div class="card-name">TIME WALLET</div>
+              <div class="card-num">**** **** **** 0003</div>
+            </div>
+            <div class="card-streak">
+              <div class="card-str-n">14</div>
+              <div class="card-str-l">DAY STREAK</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-label">✨ <strong>Gold</strong> · Premium</div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
-<section class="notify">
-  <div class="notify-label">Be first to know when we launch</div>
-  <div class="notify-row">
-    <input class="notify-input" type="email" id="emailInput" placeholder="your@email.com"/>
-    <button class="notify-btn" onclick="handleNotify()">NOTIFY ME</button>
+<!-- FEATURES -->
+<section class="features-section reveal" id="features">
+  <div class="features-header">
+    <div class="section-tag">Everything Inside</div>
+    <h2 class="section-h2">Every feature,<br>explained simply.</h2>
   </div>
-  <div class="success-msg" id="successMsg">✓ &nbsp;You're on the list. See you soon.</div>
+  <div class="features-list">
+    <div class="feature-row">
+      <div class="feature-emoji">⏱️</div>
+      <div>
+        <div class="feature-title">Daily App Budget</div>
+        <div class="feature-desc">Set a time limit for each app. When it's gone, the ATM appears. Resets every midnight like clockwork.</div>
+      </div>
+      <span class="feature-badge">FREE</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">🏧</div>
+      <div>
+        <div class="feature-title">ATM Machine UI</div>
+        <div class="feature-desc">A big, clear ATM screen with 3 real options. No sneaky bypass. You face the decision every single time.</div>
+      </div>
+      <span class="feature-badge">FREE</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">💳</div>
+      <div>
+        <div class="feature-title">Borrow Time With Interest</div>
+        <div class="feature-desc">Need 10 more minutes? Take them. Tomorrow's budget shrinks by 12. 20% interest. Always.</div>
+      </div>
+      <span class="feature-badge">FREE</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">🏦</div>
+      <div>
+        <div class="feature-title">Savings Account</div>
+        <div class="feature-desc">Unused time goes into savings automatically. You set your max daily withdrawal %. Discipline pays — literally.</div>
+      </div>
+      <span class="feature-badge">FREE</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">🔥</div>
+      <div>
+        <div class="feature-title">Streak System</div>
+        <div class="feature-desc">Stay within budget every day and your streak climbs. Default on debt — it hits zero. No exceptions. No mercy.</div>
+      </div>
+      <span class="feature-badge">FREE</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">📱</div>
+      <div>
+        <div class="feature-title">Homescreen Widget</div>
+        <div class="feature-desc">Your card on your homescreen. Live balance. You see it every time you pick up your phone — exactly when it matters.</div>
+      </div>
+      <span class="feature-badge">FREE</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">📊</div>
+      <div>
+        <div class="feature-title">Weekly & Monthly Reports</div>
+        <div class="feature-desc">See where every minute went. Which apps drain you fastest. Designed to look like a real bank statement — screenshot worthy.</div>
+      </div>
+      <span class="feature-badge premium">PREMIUM</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">🕐</div>
+      <div>
+        <div class="feature-title">24H Dial Day Planner</div>
+        <div class="feature-desc">A full clock face for your entire day. Drag and plan — sleep, work, social, everything. See your 24 hours at a glance.</div>
+      </div>
+      <span class="feature-badge premium">PREMIUM</span>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">🎨</div>
+      <div>
+        <div class="feature-title">Card Skins</div>
+        <div class="feature-desc">Onyx Black is free. Silver and Gold unlock with premium. Your card, your identity, your motivation to stay in the green.</div>
+      </div>
+      <span class="feature-badge premium">PREMIUM</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section reveal" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <div class="section-tag">Pricing</div>
+      <h2 class="section-h2">Start free.<br>Go premium for ₹49.</h2>
+      <p style="font-size:15px;color:#444;margin-top:12px;font-weight:300">Less than one Swiggy order a month.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-tier">FREE</div>
+        <div class="pricing-amount">₹0</div>
+        <div class="pricing-period">forever free</div>
+        <div class="pricing-items">
+          <div class="pricing-item on">Daily app budgets</div>
+          <div class="pricing-item on">ATM machine UI</div>
+          <div class="pricing-item on">Borrow with interest</div>
+          <div class="pricing-item on">Savings account</div>
+          <div class="pricing-item on">Streak system</div>
+          <div class="pricing-item on">Homescreen widget</div>
+          <div class="pricing-item on">Onyx Black card</div>
+          <div class="pricing-item off">Reports</div>
+          <div class="pricing-item off">Dial planner</div>
+          <div class="pricing-item off">Card skins</div>
+        </div>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-tier p">PREMIUM</div>
+        <div class="pricing-amount">₹49</div>
+        <div class="pricing-period">per month</div>
+        <div class="pricing-items">
+          <div class="pricing-item on">Everything in free</div>
+          <div class="pricing-item on">Daily, weekly, monthly reports</div>
+          <div class="pricing-item on">24H rotary dial planner</div>
+          <div class="pricing-item on">Silver & Gold card skins</div>
+          <div class="pricing-item on">No ads</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <footer>
-  <div class="footer-logo">Time Wallet</div>
-  <div class="footer-copy">© 2025 — Spend your time wisely</div>
+  <div class="footer-logo">Time<span>Wallet</span></div>
+  <div class="footer-note">ANDROID · © 2024 · COMING SOON</div>
 </footer>
 
 <script>
-  const features = [
-    { icon: '💳', text: 'Set a daily limit for each app', sub: 'Like a credit limit — Instagram gets 30 mins, YouTube gets 45. You decide.' },
-    { icon: '🔐', text: 'Enter a CVV to open any app', sub: 'That tiny pause breaks the mindless scroll reflex before it even starts.' },
-    { icon: '⏳', text: 'Borrow time from tomorrow', sub: "Hit your limit? Borrow ahead. The debt comes out of tomorrow's balance." },
-    { icon: '🕐', text: 'See your day as a 24-hour dial', sub: 'Every app fills a segment of the clock. Hard to ignore when Instagram eats half of it.' },
-    { icon: '🔥', text: 'Build a discipline streak', sub: 'Stay within limits and grow your streak. Cheat Day is allowed — but resets it to zero.' },
-    { icon: '✈️', text: 'Travel Mode pauses limits', sub: 'On a bus or train? The app detects movement and pauses restrictions automatically.' }
-  ];
+// Scroll reveal
+const obs = new IntersectionObserver(els => {
+  els.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
 
-  let current = 0;
-  let animating = false;
-  const iconEl = document.getElementById('tickerIcon');
-  const textEl = document.getElementById('tickerText');
-  const subEl = document.getElementById('tickerSub');
-  const dotsWrap = document.getElementById('tickerDots');
+// Live balance countdown
+let secs = 47*60+23;
+setInterval(() => {
+  if(secs > 0) secs--;
+  const m = String(Math.floor(secs/60)).padStart(2,'0');
+  const s = String(secs%60).padStart(2,'0');
+  const v = m+':'+s;
+  ['b1','b2','b3'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=v; });
+}, 1000);
 
-  features.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => goTo(i);
-    dotsWrap.appendChild(d);
+// ATM option selection
+function selectOpt(idx) {
+  ['opt1','opt2','opt3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('selected', i===idx);
   });
+}
 
-  function updateDots(i) {
-    document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('active', j === i));
-  }
+// ATM auto-cycle
+let cur = 0;
+setInterval(() => {
+  cur = (cur+1) % 3;
+  selectOpt(cur);
+}, 2500);
 
-  function goTo(idx) {
-    if (animating || idx === current) return;
-    animating = true;
+// Confirm button
+document.getElementById('confirmBtn').addEventListener('click', function() {
+  this.style.transform = 'scale(0.9)';
+  setTimeout(() => this.style.transform = '', 150);
+});
 
-    [textEl, subEl].forEach(el => { el.classList.add('anim-out'); });
-    iconEl.style.opacity = '0';
-    iconEl.style.transition = 'opacity 0.3s';
-
-    setTimeout(() => {
-      current = idx;
-      const f = features[current];
-      textEl.textContent = f.text;
-      subEl.textContent = f.sub;
-      iconEl.textContent = f.icon;
-      iconEl.style.opacity = '1';
-
-      [textEl, subEl].forEach(el => { el.classList.remove('anim-out'); el.classList.add('anim-in'); });
-      updateDots(current);
-
-      setTimeout(() => {
-        [textEl, subEl].forEach(el => el.classList.remove('anim-in'));
-        animating = false;
-      }, 400);
-    }, 300);
-  }
-
-  setInterval(() => goTo((current + 1) % features.length), 3000);
-
-  function handleNotify() {
-    const input = document.getElementById('emailInput');
-    if (input.value && input.value.includes('@')) {
-      document.querySelector('.notify-row').style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
-    } else {
-      input.style.borderColor = '#e74c3c';
-      setTimeout(() => input.style.borderColor = '', 1000);
-    }
-  }
-
-  document.getElementById('emailInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') handleNotify();
+// Physical buttons navigate options
+document.querySelectorAll('.atm-ctrl-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const txt = this.textContent;
+    if(txt === '▲') { cur = (cur+2)%3; selectOpt(cur); }
+    if(txt === '▼') { cur = (cur+1)%3; selectOpt(cur); }
+    this.style.transform = 'scale(0.92) translateY(1px)';
+    setTimeout(() => this.style.transform = '', 120);
   });
+});
 </script>
 </body>
 </html>
