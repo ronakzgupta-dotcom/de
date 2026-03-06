@@ -817,5 +817,906 @@ document.querySelectorAll('.atm-ctrl-btn').forEach(btn => {
   });
 });
 </script>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Wallet — The Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg: #0a0a10;
+  --green: #00e87a;
+  --yellow: #FFD60A;
+  --red: #FF453A;
+  --blue: #0A84FF;
+  --pink: #FF6B9D;
+  --purple: #BF5AF2;
+  --orange: #FF9F0A;
+  --text: #f5f5f7;
+  --card: #141420;
+  --border: rgba(255,255,255,0.08);
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── STORY WRAPPER ── */
+.story-section {
+  padding: 100px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: 
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(0,232,122,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 50%, rgba(10,132,255,0.04) 0%, transparent 60%);
+}
+
+.story-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.story-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--green);
+  background: rgba(0,232,122,0.08);
+  border: 1px solid rgba(0,232,122,0.2);
+  padding: 6px 16px; border-radius: 100px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.story-title {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900; line-height: 1.1;
+  letter-spacing: -0.02em; margin-bottom: 16px;
+}
+.story-title .g { color: var(--green); }
+.story-subtitle {
+  font-size: 18px; color: #666; font-weight: 400;
+}
+
+/* ── SCENE CONTAINER ── */
+.scene-container {
+  max-width: 900px; margin: 0 auto;
+  position: relative;
+}
+
+/* Progress dots */
+.progress-dots {
+  display: flex; justify-content: center; gap: 10px;
+  margin-bottom: 40px;
+}
+.pdot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #222; border: 1px solid #333;
+  transition: all 0.3s; cursor: pointer;
+}
+.pdot.active { background: var(--green); border-color: var(--green); transform: scale(1.3); box-shadow: 0 0 12px rgba(0,232,122,0.5); }
+.pdot.done { background: rgba(0,232,122,0.3); border-color: rgba(0,232,122,0.3); }
+
+/* Scene card */
+.scene-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  min-height: 520px;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+
+/* Scene top — illustration area */
+.scene-stage {
+  flex: 1;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 32px;
+  min-height: 340px;
+  overflow: hidden;
+}
+
+/* Scene bottom — text */
+.scene-text {
+  padding: 28px 40px 36px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.scene-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--green);
+  background: rgba(0,232,122,0.1);
+  border: 1px solid rgba(0,232,122,0.2);
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+  font-weight: 600;
+}
+.scene-copy { flex: 1; }
+.scene-heading { font-size: 22px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+.scene-desc { font-size: 15px; color: #666; line-height: 1.6; font-weight: 400; }
+.scene-highlight { color: var(--green); font-weight: 700; }
+.scene-red { color: var(--red); font-weight: 700; }
+.scene-yellow { color: var(--yellow); font-weight: 700; }
+
+/* Nav buttons */
+.scene-nav {
+  display: flex; justify-content: center; gap: 16px; margin-top: 32px; align-items: center;
+}
+.nav-btn {
+  width: 52px; height: 52px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+  font-size: 18px; color: var(--text);
+}
+.nav-btn:hover { border-color: var(--green); background: rgba(0,232,122,0.08); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.play {
+  width: auto; padding: 0 28px;
+  background: var(--green); border-color: var(--green); color: #000;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px;
+  gap: 8px; border-radius: 16px; height: 52px;
+}
+.nav-btn.play:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,232,122,0.3); background: var(--green); }
+
+/* ── SCENE BACKGROUNDS ── */
+.scene-1-bg {
+  background: linear-gradient(135deg, #0f1825 0%, #0a1020 100%);
+}
+.scene-2-bg {
+  background: linear-gradient(135deg, #150a0a 0%, #1a0f0a 100%);
+}
+.scene-3-bg {
+  background: linear-gradient(135deg, #0a150f 0%, #0a1520 100%);
+}
+.scene-4-bg {
+  background: linear-gradient(135deg, #120a1a 0%, #0f0a15 100%);
+}
+.scene-5-bg {
+  background: linear-gradient(135deg, #0a1505 0%, #0d1a0a 100%);
+}
+
+/* ── SVG CHARACTERS & ILLUSTRATIONS ── */
+
+/* Floating stars/sparkles */
+.sparkle {
+  position: absolute;
+  animation: sparkleAnim 2s ease-in-out infinite;
+}
+@keyframes sparkleAnim {
+  0%,100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+  50% { transform: scale(1.3) rotate(20deg); opacity: 1; }
+}
+
+/* Scene transitions */
+.scene { display: none; width: 100%; height: 100%; flex-direction: column; }
+.scene.active { display: flex; }
+.scene-stage-content {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  animation: sceneIn 0.5s ease forwards;
+}
+@keyframes sceneIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Character — the person */
+.char-body { animation: charBob 3s ease-in-out infinite; }
+@keyframes charBob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Phone glow pulse */
+.phone-glow { animation: phoneGlow 2s ease-in-out infinite; }
+@keyframes phoneGlow {
+  0%,100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ATM shake */
+.atm-shake { animation: atmAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes atmAppear {
+  from { transform: scale(0.3) translateY(40px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Coins falling */
+.coin { animation: coinFall var(--dur, 2s) ease-in var(--delay, 0s) infinite; }
+@keyframes coinFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120px) rotate(360deg); opacity: 0; }
+}
+
+/* Streak fire */
+.fire-anim { animation: fireDance 0.5s ease-in-out infinite alternate; }
+@keyframes fireDance {
+  from { transform: scaleY(1) scaleX(1); }
+  to { transform: scaleY(1.15) scaleX(0.9); }
+}
+
+/* Tick marks */
+.tick-pop { animation: tickPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes tickPop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Confetti pieces */
+.confetti { animation: confettiFall var(--dur,1.5s) ease-in var(--delay,0s) forwards; }
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(200px) rotate(var(--rot,360deg)); opacity: 0; }
+}
+
+/* Interest counter */
+.interest-count {
+  animation: interestPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes interestPop {
+  from { transform: scale(0) rotate(-10deg); }
+  to { transform: scale(1) rotate(0deg); }
+}
+
+/* Auto play progress bar */
+.auto-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 3px; background: var(--green);
+  border-radius: 0 2px 0 0;
+  transition: none;
+}
+
+/* Emoji floating labels */
+.float-label {
+  position: absolute;
+  font-size: 13px; font-weight: 700;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 12px; border-radius: 100px;
+  animation: floatUp 2s ease-in-out infinite;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+@keyframes floatUp {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Speech bubble */
+.speech-bubble {
+  position: absolute;
+  background: white; color: #111;
+  border-radius: 16px; padding: 10px 16px;
+  font-weight: 800; font-size: 14px;
+  animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+  white-space: nowrap;
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute; bottom: -8px; left: 20px;
+  border: 8px solid transparent;
+  border-top-color: white;
+  border-bottom: 0;
+}
+@keyframes bubblePop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Savings jar fill */
+.jar-fill { animation: jarFill 2s ease-in-out infinite alternate; }
+@keyframes jarFill {
+  from { height: 40px; }
+  to { height: 65px; }
+}
+
+/* Wiggle */
+.wiggle { animation: wiggle 0.6s ease-in-out 0.5s 3; }
+@keyframes wiggle {
+  0%,100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+@media (max-width: 600px) {
+  .scene-text { padding: 20px 24px 28px; flex-direction: column; gap: 12px; }
+  .scene-heading { font-size: 18px; }
+  .scene-desc { font-size: 14px; }
+  .story-section { padding: 60px 16px; }
+}
+</style>
+</head>
+<body>
+
+<section class="story-section">
+  <div class="story-bg"></div>
+
+  <div class="story-header">
+    <div class="story-tag">✨ See It In Action</div>
+    <h2 class="story-title">Meet <span class="g">Aryan.</span><br>He has a phone problem.</h2>
+    <p class="story-subtitle">Watch how Time Wallet changes everything — in 5 scenes.</p>
+  </div>
+
+  <div class="scene-container">
+    <div class="progress-dots">
+      <div class="pdot active" onclick="goTo(0)"></div>
+      <div class="pdot" onclick="goTo(1)"></div>
+      <div class="pdot" onclick="goTo(2)"></div>
+      <div class="pdot" onclick="goTo(3)"></div>
+      <div class="pdot" onclick="goTo(4)"></div>
+    </div>
+
+    <div class="scene-card">
+      <div class="auto-bar" id="autoBar"></div>
+
+      <!-- SCENE 1: Aryan scrolling mindlessly -->
+      <div class="scene active" id="scene-0">
+        <div class="scene-stage scene-1-bg">
+          <div class="scene-stage-content">
+            <svg width="420" height="280" viewBox="0 0 420 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Background glow -->
+              <ellipse cx="210" cy="260" rx="160" ry="20" fill="rgba(10,132,255,0.08)"/>
+
+              <!-- Character body -->
+              <g class="char-body">
+                <!-- Legs -->
+                <rect x="175" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="223" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <!-- Shoes -->
+                <rect x="168" y="255" width="36" height="16" rx="8" fill="#333"/>
+                <rect x="216" y="255" width="36" height="16" rx="8" fill="#333"/>
+                <!-- Body -->
+                <rect x="162" y="140" width="96" height="80" rx="20" fill="#0A84FF"/>
+                <!-- Hoodie pocket -->
+                <rect x="188" y="185" width="44" height="26" rx="8" fill="rgba(0,0,0,0.15)"/>
+                <!-- Head -->
+                <ellipse cx="210" cy="118" rx="44" ry="46" fill="#D4A574"/>
+                <!-- Hair -->
+                <path d="M166 108 Q170 72 210 68 Q250 72 254 108 Q246 88 210 86 Q174 88 166 108Z" fill="#2C1810"/>
+                <!-- Eyes -->
+                <ellipse cx="196" cy="115" rx="6" ry="7" fill="white"/>
+                <ellipse cx="224" cy="115" rx="6" ry="7" fill="white"/>
+                <ellipse cx="197" cy="116" rx="4" ry="5" fill="#333"/>
+                <ellipse cx="225" cy="116" rx="4" ry="5" fill="#333"/>
+                <!-- Tired eyes lines -->
+                <path d="M190 109 Q196 106 202 109" stroke="#C8A882" stroke-width="2" stroke-linecap="round"/>
+                <path d="M218 109 Q224 106 230 109" stroke="#C8A882" stroke-width="2" stroke-linecap="round"/>
+                <!-- Mouth - slack open -->
+                <path d="M200 132 Q210 140 220 132" stroke="#333" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Left arm holding phone down -->
+                <rect x="130" y="145" width="36" height="22" rx="11" fill="#0A84FF" transform="rotate(30 130 145)"/>
+                <rect x="123" y="168" width="22" height="42" rx="11" fill="#C8A882" transform="rotate(15 123 168)"/>
+                <!-- Right arm up scrolling -->
+                <rect x="234" y="142" width="36" height="22" rx="11" fill="#0A84FF" transform="rotate(-20 234 142)"/>
+                <rect x="255" y="155" width="22" height="40" rx="11" fill="#C8A882" transform="rotate(-30 255 155)"/>
+                <!-- Finger -->
+                <ellipse cx="268" cy="148" rx="8" ry="8" fill="#C8A882"/>
+              </g>
+
+              <!-- Phone -->
+              <g transform="translate(140, 155) rotate(8)">
+                <rect x="0" y="0" width="62" height="108" rx="12" fill="#1a1a2e"/>
+                <rect x="2" y="2" width="58" height="104" rx="10" fill="#0a0a18"/>
+                <!-- Screen content - social feed -->
+                <rect x="4" y="8" width="54" height="14" rx="4" fill="#1e3a5f"/>
+                <rect x="4" y="26" width="54" height="24" rx="4" fill="#162030"/>
+                <rect x="4" y="54" width="54" height="24" rx="4" fill="#162030"/>
+                <rect x="4" y="82" width="54" height="20" rx="4" fill="#162030"/>
+                <!-- Scroll indicator -->
+                <circle cx="55" cy="50" r="3" fill="rgba(255,255,255,0.2)"/>
+                <!-- Notch -->
+                <rect x="22" y="4" width="18" height="5" rx="2.5" fill="#0a0a18"/>
+                <!-- Screen glow -->
+                <rect x="0" y="0" width="62" height="108" rx="12" fill="url(#phoneGlow)" opacity="0.3"/>
+                <defs>
+                  <radialGradient id="phoneGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#0A84FF"/>
+                    <stop offset="100%" stop-color="transparent"/>
+                  </radialGradient>
+                </defs>
+              </g>
+
+              <!-- Floating app icons showing distraction -->
+              <g style="animation: floatUp 2.5s ease-in-out infinite" class="sparkle" transform="translate(50,80)">
+                <rect width="36" height="36" rx="10" fill="#FF453A"/>
+                <text x="18" y="24" text-anchor="middle" font-size="18">▶</text>
+              </g>
+              <g style="animation: floatUp 2s ease-in-out 0.5s infinite" class="sparkle" transform="translate(330,70)">
+                <rect width="36" height="36" rx="10" fill="#0A84FF"/>
+                <text x="18" y="24" text-anchor="middle" font-size="18">📸</text>
+              </g>
+              <g style="animation: floatUp 3s ease-in-out 1s infinite" class="sparkle" transform="translate(340,160)">
+                <rect width="36" height="36" rx="10" fill="#25D366"/>
+                <text x="18" y="24" text-anchor="middle" font-size="18">💬</text>
+              </g>
+
+              <!-- Time passing clock -->
+              <g transform="translate(44,20)">
+                <circle cx="20" cy="20" r="18" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                <text x="20" y="25" text-anchor="middle" font-size="14" fill="#666">🕐</text>
+              </g>
+              <text x="68" y="28" font-size="11" fill="#444" font-family="JetBrains Mono">3 hours later...</text>
+
+              <!-- ZZZ showing brain off -->
+              <text x="290" y="75" font-size="20" fill="#444" style="animation:floatUp 2s ease-in-out infinite">z</text>
+              <text x="308" y="58" font-size="16" fill="#333" style="animation:floatUp 2s ease-in-out 0.5s infinite">z</text>
+              <text x="322" y="44" font-size="12" fill="#222" style="animation:floatUp 2s ease-in-out 1s infinite">z</text>
+            </svg>
+          </div>
+
+          <!-- Speech bubble -->
+          <div class="speech-bubble" style="top:32px; left:50%; transform:translateX(-10px)">
+            Just 5 more minutes... 😅
+          </div>
+          <div class="float-label" style="bottom:24px; right:32px;">⏰ 3 hrs gone</div>
+        </div>
+        <div class="scene-text">
+          <div class="scene-num">1</div>
+          <div class="scene-copy">
+            <div class="scene-heading">Aryan can't stop scrolling 😔</div>
+            <div class="scene-desc">He opens Instagram for "5 minutes." Three hours vanish. Sound familiar? Every other app just watches — and does nothing.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: ATM appears! -->
+      <div class="scene" id="scene-1">
+        <div class="scene-stage scene-2-bg">
+          <div class="scene-stage-content">
+            <svg width="420" height="280" viewBox="0 0 420 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Background glow red -->
+              <ellipse cx="210" cy="260" rx="180" ry="25" fill="rgba(255,69,58,0.06)"/>
+              <ellipse cx="210" cy="140" rx="140" ry="100" fill="rgba(255,69,58,0.04)"/>
+
+              <!-- Shocked Aryan (smaller, side) -->
+              <g transform="translate(20, 60) scale(0.65)" class="wiggle">
+                <rect x="175" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="223" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="168" y="255" width="36" height="16" rx="8" fill="#333"/>
+                <rect x="216" y="255" width="36" height="16" rx="8" fill="#333"/>
+                <rect x="162" y="140" width="96" height="80" rx="20" fill="#0A84FF"/>
+                <ellipse cx="210" cy="118" rx="44" ry="46" fill="#D4A574"/>
+                <path d="M166 108 Q170 72 210 68 Q250 72 254 108 Q246 88 210 86 Q174 88 166 108Z" fill="#2C1810"/>
+                <!-- Shocked eyes wide open -->
+                <ellipse cx="196" cy="115" rx="9" ry="10" fill="white"/>
+                <ellipse cx="224" cy="115" rx="9" ry="10" fill="white"/>
+                <ellipse cx="197" cy="116" rx="5" ry="6" fill="#333"/>
+                <ellipse cx="225" cy="116" rx="5" ry="6" fill="#333"/>
+                <!-- O mouth shock -->
+                <ellipse cx="210" cy="136" rx="8" ry="9" fill="#333"/>
+              </g>
+
+              <!-- THE BIG ATM MACHINE -->
+              <g class="atm-shake" transform="translate(160, 10)">
+                <!-- ATM body -->
+                <rect x="0" y="0" width="200" height="255" rx="20" fill="#1a1a28"/>
+                <rect x="2" y="2" width="196" height="251" rx="18" fill="#141420"/>
+                <!-- Top bar -->
+                <rect x="0" y="0" width="200" height="40" rx="18" fill="#0f0f1a"/>
+                <rect x="0" y="20" width="200" height="20" fill="#0f0f1a"/>
+                <!-- Brand -->
+                <text x="100" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#00e87a" letter-spacing="3">TIME WALLET</text>
+                <!-- Warning light -->
+                <circle cx="178" cy="22" r="5" fill="#FF453A"/>
+                <circle cx="178" cy="22" r="5" fill="#FF453A" opacity="0.5" style="animation:phoneGlow 1s infinite"/>
+
+                <!-- Screen -->
+                <rect x="12" y="48" width="176" height="130" rx="12" fill="#080910"/>
+                <rect x="14" y="50" width="172" height="126" rx="10" fill="#0a0c18"/>
+
+                <!-- Screen content -->
+                <text x="100" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FF453A">⚠ TIME'S UP — INSTAGRAM</text>
+                <text x="100" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="28" fill="#FF453A" font-weight="bold">00:00</text>
+
+                <!-- 3 options on screen -->
+                <!-- Option 1 -->
+                <rect x="18" y="108" width="164" height="26" rx="8" fill="rgba(255,69,58,0.15)" stroke="rgba(255,69,58,0.3)" stroke-width="1"/>
+                <text x="32" y="125" font-family="Nunito" font-size="10" fill="#FF453A" font-weight="700">💳 Borrow Time (+20% interest)</text>
+                <!-- Option 2 -->
+                <rect x="18" y="138" width="164" height="26" rx="8" fill="rgba(0,232,122,0.1)" stroke="rgba(0,232,122,0.2)" stroke-width="1"/>
+                <text x="32" y="155" font-family="Nunito" font-size="10" fill="#00e87a" font-weight="700">🏦 Use Savings</text>
+                <!-- Option 3 -->
+                <rect x="18" y="168" width="164" height="26" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                <text x="32" y="185" font-family="Nunito" font-size="10" fill="#888" font-weight="700">🚪 Close App</text>
+
+                <!-- Control buttons -->
+                <rect x="12" y="190" width="176" height="50" rx="8" fill="rgba(255,255,255,0.02)"/>
+                <!-- Cancel -->
+                <rect x="18" y="196" width="38" height="38" rx="10" fill="rgba(255,69,58,0.15)" stroke="rgba(255,69,58,0.2)" stroke-width="1"/>
+                <text x="37" y="220" text-anchor="middle" font-size="16" fill="#FF453A">✕</text>
+                <!-- Up -->
+                <rect x="64" y="196" width="38" height="38" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                <text x="83" y="220" text-anchor="middle" font-size="16" fill="#888">▲</text>
+                <!-- Down -->
+                <rect x="110" y="196" width="38" height="38" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                <text x="129" y="220" text-anchor="middle" font-size="16" fill="#888">▼</text>
+                <!-- Confirm -->
+                <rect x="156" y="196" width="38" height="38" rx="10" fill="rgba(0,232,122,0.2)" stroke="rgba(0,232,122,0.3)" stroke-width="1"/>
+                <text x="175" y="220" text-anchor="middle" font-size="16" fill="#00e87a">✓</text>
+
+                <!-- Card slot at bottom -->
+                <rect x="60" y="245" width="80" height="6" rx="3" fill="#0a0a10" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              </g>
+
+              <!-- Exclamation marks around ATM -->
+              <text x="148" y="50" font-size="22" style="animation:sparkleAnim 1s infinite">❗</text>
+              <text x="375" y="80" font-size="18" style="animation:sparkleAnim 1s 0.3s infinite">❗</text>
+            </svg>
+          </div>
+          <div class="float-label" style="top:24px; left:50%; transform:translateX(-50%)">🚨 Your time ran out!</div>
+        </div>
+        <div class="scene-text">
+          <div class="scene-num">2</div>
+          <div class="scene-copy">
+            <div class="scene-heading">The ATM appears! 🏧</div>
+            <div class="scene-desc">No boring "time limit reached" message. A <span class="scene-highlight">big ATM machine pops up</span> with exactly 3 choices. Aryan has to decide — right now.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: He borrows — and pays interest -->
+      <div class="scene" id="scene-2">
+        <div class="scene-stage scene-3-bg">
+          <div class="scene-stage-content">
+            <svg width="420" height="280" viewBox="0 0 420 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="210" cy="265" rx="160" ry="18" fill="rgba(255,159,10,0.06)"/>
+
+              <!-- Today's budget bar -->
+              <g transform="translate(30, 20)">
+                <text x="0" y="14" font-family="Nunito" font-size="13" fill="#888" font-weight="700">TODAY (borrowed 10 mins)</text>
+                <rect x="0" y="22" width="340" height="28" rx="14" fill="rgba(255,255,255,0.05)"/>
+                <rect x="0" y="22" width="220" height="28" rx="14" fill="#0A84FF"/>
+                <rect x="220" y="22" width="120" height="28" rx="14" fill="rgba(255,69,58,0.4)"/>
+                <text x="110" y="41" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="white">Used</text>
+                <text x="280" y="41" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#FF453A">Borrowed</text>
+                <text x="356" y="41" font-family="Nunito" font-size="13" fill="#FF453A" font-weight="800">+10m</text>
+              </g>
+
+              <!-- Arrow down -->
+              <text x="204" y="90" font-size="24" fill="#FF453A" text-anchor="middle">↓</text>
+              <text x="215" y="90" font-size="13" fill="#FF453A" font-family="JetBrains Mono">20% interest</text>
+
+              <!-- Tomorrow's budget bar (smaller!) -->
+              <g transform="translate(30, 100)">
+                <text x="0" y="14" font-family="Nunito" font-size="13" fill="#FF453A" font-weight="700">TOMORROW (12 mins LESS 😬)</text>
+                <rect x="0" y="22" width="340" height="28" rx="14" fill="rgba(255,255,255,0.05)"/>
+                <rect x="0" y="22" width="176" height="28" rx="14" fill="#0A84FF" opacity="0.6"/>
+                <rect x="176" y="22" width="164" height="28" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,69,58,0.3)" stroke-width="1" stroke-dasharray="4"/>
+                <text x="88" y="41" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,0.5)">Remaining</text>
+                <text x="258" y="41" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(255,69,58,0.4)">-12 mins</text>
+              </g>
+
+              <!-- Interest explanation -->
+              <g transform="translate(30, 155)" class="interest-count">
+                <rect x="0" y="0" width="340" height="70" rx="16" fill="rgba(255,159,10,0.08)" stroke="rgba(255,159,10,0.2)" stroke-width="1"/>
+                <text x="20" y="24" font-family="Nunito" font-size="13" fill="#FF9F0A" font-weight="800">💡 How interest works:</text>
+                <text x="20" y="44" font-family="Nunito" font-size="13" fill="#888">Borrow 10 mins → Pay back 12 mins tomorrow</text>
+                <text x="20" y="62" font-family="Nunito" font-size="13" fill="#888">That's 20% interest. Just like a real loan.</text>
+              </g>
+
+              <!-- Sad face Aryan small -->
+              <g transform="translate(348, 155) scale(0.4)">
+                <ellipse cx="50" cy="50" rx="44" ry="46" fill="#D4A574"/>
+                <path d="M26 42 Q30 28 50 25 Q70 28 74 42 Q66 33 50 31 Q34 33 26 42Z" fill="#2C1810"/>
+                <ellipse cx="36" cy="52" rx="7" ry="8" fill="white"/>
+                <ellipse cx="64" cy="52" rx="7" ry="8" fill="white"/>
+                <ellipse cx="37" cy="53" rx="4" ry="5" fill="#333"/>
+                <ellipse cx="65" cy="53" rx="4" ry="5" fill="#333"/>
+                <path d="M36 68 Q50 62 64 68" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <text x="30" y="-10" font-size="28">😬</text>
+              </g>
+            </svg>
+          </div>
+          <div class="float-label" style="top:24px; right:32px; color:var(--red)">💸 Borrowed = cost tomorrow</div>
+        </div>
+        <div class="scene-text">
+          <div class="scene-num">3</div>
+          <div class="scene-copy">
+            <div class="scene-heading">He borrows — but pays the price 💸</div>
+            <div class="scene-desc">Aryan chooses to borrow 10 minutes. He gets them — but <span class="scene-red">tomorrow's budget shrinks by 12 minutes</span>. 20% interest. He feels it instantly.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: Smart Aryan saves time -->
+      <div class="scene" id="scene-3">
+        <div class="scene-stage scene-4-bg">
+          <div class="scene-stage-content">
+            <svg width="420" height="280" viewBox="0 0 420 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="210" cy="265" rx="160" ry="18" fill="rgba(0,232,122,0.06)"/>
+
+              <!-- Happy Aryan -->
+              <g transform="translate(15, 40) scale(0.72)" class="char-body">
+                <rect x="175" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="223" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="168" y="255" width="36" height="16" rx="8" fill="#333"/>
+                <rect x="216" y="255" width="36" height="16" rx="8" fill="#333"/>
+                <rect x="162" y="140" width="96" height="80" rx="20" fill="#00e87a"/>
+                <ellipse cx="210" cy="118" rx="44" ry="46" fill="#D4A574"/>
+                <path d="M166 108 Q170 72 210 68 Q250 72 254 108 Q246 88 210 86 Q174 88 166 108Z" fill="#2C1810"/>
+                <ellipse cx="196" cy="115" rx="6" ry="6" fill="white"/>
+                <ellipse cx="224" cy="115" rx="6" ry="6" fill="white"/>
+                <ellipse cx="197" cy="116" rx="3.5" ry="4" fill="#333"/>
+                <ellipse cx="225" cy="116" rx="3.5" ry="4" fill="#333"/>
+                <path d="M196 131 Q210 143 224 131" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Thumbs up arm -->
+                <rect x="234" y="142" width="36" height="22" rx="11" fill="#00e87a" transform="rotate(-30 234 142)"/>
+                <rect x="258" y="130" width="22" height="40" rx="11" fill="#C8A882" transform="rotate(-45 258 130)"/>
+                <text x="255" y="112" font-size="20">👍</text>
+              </g>
+
+              <!-- Savings jar/account visual -->
+              <g transform="translate(155, 15)">
+                <!-- Jar outline -->
+                <rect x="20" y="30" width="110" height="105" rx="16" fill="rgba(0,232,122,0.08)" stroke="rgba(0,232,122,0.3)" stroke-width="2"/>
+                <!-- Jar fill (growing) -->
+                <clipPath id="jarClip"><rect x="20" y="30" width="110" height="105" rx="16"/></clipPath>
+                <g clip-path="url(#jarClip)">
+                  <rect x="20" y="95" width="110" height="40" fill="rgba(0,232,122,0.2)" class="jar-fill"/>
+                  <!-- Liquid surface wave -->
+                  <path d="M20 95 Q45 88 75 95 Q105 102 130 95 L130 135 L20 135Z" fill="rgba(0,232,122,0.15)"/>
+                </g>
+                <!-- Jar lid -->
+                <rect x="14" y="18" width="122" height="18" rx="9" fill="rgba(0,232,122,0.2)" stroke="rgba(0,232,122,0.4)" stroke-width="1.5"/>
+                <!-- Label -->
+                <text x="75" y="82" text-anchor="middle" font-family="Nunito" font-size="12" fill="#00e87a" font-weight="800">SAVINGS</text>
+                <text x="75" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="18" fill="#00e87a" font-weight="bold">+47m</text>
+                <!-- Coins going in -->
+                <text x="65" y="-5" font-size="16" style="animation:coinFall 1.5s ease-in infinite" class="coin" data-delay="0">🪙</text>
+                <text x="85" y="-5" font-size="14" style="animation:coinFall 1.5s ease-in 0.4s infinite" class="coin">🪙</text>
+                <text x="95" y="-5" font-size="12" style="animation:coinFall 1.5s ease-in 0.8s infinite" class="coin">🪙</text>
+              </g>
+
+              <!-- Interest earned -->
+              <g transform="translate(290, 15)">
+                <rect x="0" y="0" width="118" height="52" rx="12" fill="rgba(0,232,122,0.08)" stroke="rgba(0,232,122,0.2)" stroke-width="1"/>
+                <text x="12" y="20" font-family="Nunito" font-size="11" fill="#888" font-weight="700">Saved 40 mins?</text>
+                <text x="12" y="38" font-family="Nunito" font-size="13" fill="#00e87a" font-weight="800">Earn +4 mins free! 🎉</text>
+              </g>
+              <g transform="translate(290, 80)">
+                <rect x="0" y="0" width="118" height="52" rx="12" fill="rgba(0,232,122,0.08)" stroke="rgba(0,232,122,0.2)" stroke-width="1"/>
+                <text x="12" y="20" font-family="Nunito" font-size="11" fill="#888" font-weight="700">10% interest</text>
+                <text x="12" y="38" font-family="Nunito" font-size="13" fill="#00e87a" font-weight="800">on your savings ✅</text>
+              </g>
+
+              <!-- Streak -->
+              <g transform="translate(290, 148)">
+                <rect x="0" y="0" width="118" height="80" rx="12" fill="rgba(255,159,10,0.08)" stroke="rgba(255,159,10,0.2)" stroke-width="1"/>
+                <text x="59" y="30" text-anchor="middle" font-size="28" class="fire-anim">🔥</text>
+                <text x="59" y="52" text-anchor="middle" font-family="Syne" font-size="22" fill="#FF9F0A" font-weight="800">14</text>
+                <text x="59" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#888" letter-spacing="1">DAY STREAK</text>
+              </g>
+
+              <!-- Stars/sparkles -->
+              <text x="145" y="35" font-size="16" class="sparkle" style="animation-delay:0.2s">⭐</text>
+              <text x="140" y="240" font-size="14" class="sparkle" style="animation-delay:0.7s">✨</text>
+            </svg>
+          </div>
+          <div class="speech-bubble" style="top:24px; left:24px;">I saved 40 mins today! 🎉</div>
+        </div>
+        <div class="scene-text">
+          <div class="scene-num">4</div>
+          <div class="scene-copy">
+            <div class="scene-heading">Smart Aryan saves his time 🏦</div>
+            <div class="scene-desc">The next day, Aryan closes apps early. Unused time <span class="scene-highlight">goes into savings automatically</span> and earns 10% interest. His streak climbs. It feels like winning.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 5: Glow up — Aryan transformed -->
+      <div class="scene" id="scene-4">
+        <div class="scene-stage scene-5-bg">
+          <div class="scene-stage-content">
+            <svg width="420" height="280" viewBox="0 0 420 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Green glow bg -->
+              <ellipse cx="210" cy="160" rx="170" ry="120" fill="rgba(0,232,122,0.04)"/>
+              <ellipse cx="210" cy="265" rx="160" ry="18" fill="rgba(0,232,122,0.08)"/>
+
+              <!-- Transformed Aryan — bigger, confident -->
+              <g transform="translate(50, 25) scale(0.9)" class="char-body">
+                <rect x="175" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="223" y="210" width="22" height="55" rx="11" fill="#C8A882"/>
+                <rect x="168" y="255" width="36" height="16" rx="8" fill="#1a1a2e"/>
+                <rect x="216" y="255" width="36" height="16" rx="8" fill="#1a1a2e"/>
+                <!-- Gold outfit now -->
+                <rect x="162" y="140" width="96" height="80" rx="20" fill="url(#goldGrad)"/>
+                <defs>
+                  <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FFD700"/>
+                    <stop offset="100%" stop-color="#FFA500"/>
+                  </linearGradient>
+                </defs>
+                <ellipse cx="210" cy="118" rx="44" ry="46" fill="#D4A574"/>
+                <path d="M166 108 Q170 72 210 68 Q250 72 254 108 Q246 88 210 86 Q174 88 166 108Z" fill="#2C1810"/>
+                <!-- Happy confident eyes -->
+                <ellipse cx="196" cy="115" rx="6" ry="6" fill="white"/>
+                <ellipse cx="224" cy="115" rx="6" ry="6" fill="white"/>
+                <ellipse cx="198" cy="116" rx="3.5" ry="3.5" fill="#333"/>
+                <ellipse cx="226" cy="116" rx="3.5" ry="3.5" fill="#333"/>
+                <!-- Shine eyes -->
+                <circle cx="200" cy="114" r="1.5" fill="white"/>
+                <circle cx="228" cy="114" r="1.5" fill="white"/>
+                <!-- Big smile -->
+                <path d="M194 132 Q210 148 226 132" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Arms up celebrating -->
+                <rect x="130" y="148" width="36" height="22" rx="11" fill="url(#goldGrad)" transform="rotate(-30 130 148)"/>
+                <rect x="108" y="120" width="22" height="44" rx="11" fill="#C8A882" transform="rotate(-50 108 120)"/>
+                <rect x="234" y="148" width="36" height="22" rx="11" fill="url(#goldGrad)" transform="rotate(30 234 148)"/>
+                <rect x="270" y="120" width="22" height="44" rx="11" fill="#C8A882" transform="rotate(50 270 120)"/>
+              </g>
+
+              <!-- Gold card floating -->
+              <g transform="translate(250, 30)" style="animation:charBob 4s ease-in-out infinite">
+                <rect x="0" y="0" width="150" height="95" rx="14" fill="url(#goldCardGrad)" filter="url(#cardShadow)"/>
+                <defs>
+                  <linearGradient id="goldCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#b8860b"/>
+                    <stop offset="30%" stop-color="#FFD700"/>
+                    <stop offset="60%" stop-color="#daa520"/>
+                    <stop offset="100%" stop-color="#b8860b"/>
+                  </linearGradient>
+                  <filter id="cardShadow">
+                    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(255,193,7,0.3)"/>
+                  </filter>
+                </defs>
+                <!-- Card shine -->
+                <rect x="0" y="0" width="150" height="95" rx="14" fill="rgba(255,255,255,0.12)"/>
+                <rect x="0" y="0" width="60" height="95" rx="14" fill="rgba(255,255,255,0.06)"/>
+                <!-- Chip -->
+                <rect x="12" y="16" width="24" height="18" rx="3" fill="rgba(0,0,0,0.2)"/>
+                <!-- Balance -->
+                <text x="12" y="56" font-family="JetBrains Mono" font-size="7" fill="rgba(0,0,0,0.4)" letter-spacing="1">BALANCE</text>
+                <text x="12" y="72" font-family="Nunito" font-size="18" fill="rgba(0,0,0,0.7)" font-weight="900">2h 47m</text>
+                <!-- Streak -->
+                <text x="120" y="72" text-anchor="middle" font-family="Nunito" font-size="16" fill="rgba(0,0,0,0.7)" font-weight="900">🔥30</text>
+                <text x="120" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="rgba(0,0,0,0.35)" letter-spacing="1">STREAK</text>
+                <!-- Card name -->
+                <text x="12" y="88" font-family="JetBrains Mono" font-size="7" fill="rgba(0,0,0,0.3)" letter-spacing="2">TIME WALLET GOLD</text>
+              </g>
+
+              <!-- Confetti! -->
+              <text x="60" y="40" font-size="16" class="confetti" style="--dur:2s;--delay:0s;--rot:180deg">🎊</text>
+              <text x="100" y="20" font-size="14" class="confetti" style="--dur:2.2s;--delay:0.3s;--rot:270deg">🎉</text>
+              <text x="340" y="30" font-size="16" class="confetti" style="--dur:1.8s;--delay:0.6s;--rot:90deg">⭐</text>
+              <text x="380" y="50" font-size="14" class="confetti" style="--dur:2.4s;--delay:0.1s;--rot:360deg">✨</text>
+              <text x="30" y="60" font-size="12" class="confetti" style="--dur:2s;--delay:0.8s;--rot:200deg">🌟</text>
+              <text x="390" y="120" font-size="16" class="confetti" style="--dur:2.1s;--delay:0.4s;--rot:150deg">🎊</text>
+
+              <!-- Stats boxes -->
+              <g transform="translate(30, 195)">
+                <rect x="0" y="0" width="100" height="56" rx="12" fill="rgba(0,232,122,0.08)" stroke="rgba(0,232,122,0.15)" stroke-width="1"/>
+                <text x="50" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#888">Saved</text>
+                <text x="50" y="44" text-anchor="middle" font-family="Nunito" font-size="20" fill="#00e87a" font-weight="900">3h 20m</text>
+              </g>
+              <g transform="translate(145, 195)">
+                <rect x="0" y="0" width="100" height="56" rx="12" fill="rgba(255,159,10,0.08)" stroke="rgba(255,159,10,0.15)" stroke-width="1"/>
+                <text x="50" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#888">Streak</text>
+                <text x="50" y="44" text-anchor="middle" font-family="Nunito" font-size="20" fill="#FF9F0A" font-weight="900">🔥 30</text>
+              </g>
+              <g transform="translate(260, 195)">
+                <rect x="0" y="0" width="100" height="56" rx="12" fill="rgba(191,90,242,0.08)" stroke="rgba(191,90,242,0.15)" stroke-width="1"/>
+                <text x="50" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#888">Card</text>
+                <text x="50" y="44" text-anchor="middle" font-family="Nunito" font-size="20" fill="#BF5AF2" font-weight="900">✨ Gold</text>
+              </g>
+            </svg>
+          </div>
+          <div class="speech-bubble" style="top:24px; left:24px; background:#FFD700; color:#000">
+            I own my time now! 💪
+          </div>
+        </div>
+        <div class="scene-text">
+          <div class="scene-num">5</div>
+          <div class="scene-copy">
+            <div class="scene-heading">Aryan wins. And so will you. 🏆</div>
+            <div class="scene-desc">30-day streak. Gold card. <span class="scene-highlight">3 hours saved this week</span>. Time Wallet didn't block his phone — it made him <em>choose</em> better. Every. Single. Day.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end scene-card -->
+
+    <!-- Nav -->
+    <div class="scene-nav">
+      <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>←</button>
+      <button class="nav-btn play" id="playBtn" onclick="togglePlay()">
+        <span id="playIcon">⏸</span> <span id="playText">Auto Playing</span>
+      </button>
+      <button class="nav-btn" id="nextBtn" onclick="next()">→</button>
+    </div>
+  </div><!-- end scene-container -->
+</section>
+
+<script>
+let current = 0;
+const total = 5;
+let playing = true;
+let timer = null;
+let barTimer = null;
+const SCENE_DURATION = 4000;
+
+function goTo(idx) {
+  document.getElementById('scene-' + current).classList.remove('active');
+  document.querySelectorAll('.pdot')[current].classList.remove('active');
+  document.querySelectorAll('.pdot')[current].classList.add('done');
+
+  current = idx;
+
+  document.getElementById('scene-' + current).classList.add('active');
+  const dots = document.querySelectorAll('.pdot');
+  dots.forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i < current) d.classList.add('done');
+    if (i === current) d.classList.add('active');
+  });
+
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total - 1;
+
+  startBar();
+}
+
+function next() {
+  if (current < total - 1) goTo(current + 1);
+  else if (playing) { goTo(0); }
+}
+
+function prev() {
+  if (current > 0) goTo(current - 1);
+}
+
+function startBar() {
+  const bar = document.getElementById('autoBar');
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  clearTimeout(barTimer);
+  if (playing) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        bar.style.transition = `width ${SCENE_DURATION}ms linear`;
+        bar.style.width = '100%';
+      });
+    });
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (current < total - 1) next();
+      else { goTo(0); }
+    }, SCENE_DURATION);
+  }
+}
+
+function togglePlay() {
+  playing = !playing;
+  const icon = document.getElementById('playIcon');
+  const txt = document.getElementById('playText');
+  if (playing) {
+    icon.textContent = '⏸';
+    txt.textContent = 'Auto Playing';
+    startBar();
+  } else {
+    icon.textContent = '▶';
+    txt.textContent = 'Auto Play';
+    clearTimeout(timer);
+    const bar = document.getElementById('autoBar');
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+  }
+}
+
+// Start
+startBar();
+</script>
 </body>
 </html>
